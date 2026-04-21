@@ -1,0 +1,774 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>🔥 MISSION: BANK FINALE 🔥</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Orbitron:wght@600;900&family=Prompt:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --neon-pink:#ff2a9d;
+    --neon-cyan:#00f0ff;
+    --neon-purple:#a64bff;
+    --neon-yellow:#ffe600;
+    --bg-0:#0a0520;
+    --bg-1:#1a0a3a;
+  }
+  html,body{min-height:100vh;overflow-x:hidden}
+  body{
+    font-family:'Prompt',system-ui,sans-serif;
+    color:#fff;
+    background:var(--bg-0);
+    position:relative;
+    padding:40px 20px 80px;
+  }
+  /* Animated gradient background */
+  .bg-animation{
+    position:fixed;inset:0;z-index:-2;
+    background:linear-gradient(125deg,#0a0520,#2a0a4a,#4a0a6a,#0a2a5a,#0a0520);
+    background-size:400% 400%;
+    animation:gradient-shift 18s ease infinite;
+  }
+  @keyframes gradient-shift{
+    0%,100%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+  }
+  /* Floating particles */
+  .particles{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+  .particles span{
+    position:absolute;display:block;width:6px;height:6px;border-radius:50%;
+    background:var(--neon-cyan);
+    box-shadow:0 0 10px var(--neon-cyan),0 0 20px var(--neon-cyan);
+    bottom:-20px;opacity:.7;
+    animation:float linear infinite;
+  }
+  .particles span:nth-child(odd){background:var(--neon-pink);box-shadow:0 0 10px var(--neon-pink),0 0 20px var(--neon-pink)}
+  .particles span:nth-child(3n){background:var(--neon-purple);box-shadow:0 0 10px var(--neon-purple),0 0 20px var(--neon-purple)}
+  .particles span:nth-child(5n){background:var(--neon-yellow);box-shadow:0 0 10px var(--neon-yellow),0 0 20px var(--neon-yellow)}
+  @keyframes float{
+    0%{transform:translateY(0) translateX(0) scale(1);opacity:0}
+    10%{opacity:.8}
+    90%{opacity:.8}
+    100%{transform:translateY(-110vh) translateX(40px) scale(.5);opacity:0}
+  }
+
+  /* Title */
+  .title{text-align:center;margin-bottom:40px}
+  .title h1{
+    font-family:'Audiowide',sans-serif;
+    font-size:clamp(1.8rem,5vw,3.6rem);
+    letter-spacing:.08em;
+    background:linear-gradient(90deg,var(--neon-pink),var(--neon-yellow),var(--neon-cyan),var(--neon-purple),var(--neon-pink));
+    background-size:300% 100%;
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:gradient-shift 4s linear infinite,pulse-title 2s ease-in-out infinite;
+    filter:drop-shadow(0 0 12px rgba(255,42,157,.6));
+  }
+  @keyframes pulse-title{
+    0%,100%{transform:scale(1)}
+    50%{transform:scale(1.03)}
+  }
+  .title p{
+    margin-top:12px;
+    font-size:clamp(.95rem,1.8vw,1.15rem);
+    color:#c7b6ff;
+    letter-spacing:.05em;
+  }
+  .title .names-inline{color:var(--neon-yellow);font-weight:900;text-shadow:0 0 8px var(--neon-yellow)}
+
+  /* Countdown */
+  .countdown{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:16px;
+    max-width:1100px;margin:0 auto 50px;
+  }
+  .unit{
+    position:relative;
+    background:rgba(20,5,50,.55);
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border:1.5px solid rgba(255,42,157,.35);
+    border-radius:20px;
+    padding:28px 12px 20px;
+    text-align:center;
+    box-shadow:
+      0 0 30px rgba(166,75,255,.35),
+      inset 0 0 20px rgba(0,240,255,.08);
+    overflow:hidden;
+  }
+  .unit::before{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(135deg,transparent 40%,rgba(255,42,157,.15),transparent 60%);
+    animation:shimmer 3s linear infinite;pointer-events:none;
+  }
+  @keyframes shimmer{
+    0%{transform:translateX(-100%)}
+    100%{transform:translateX(100%)}
+  }
+  .unit .num{
+    font-family:'Orbitron',sans-serif;font-weight:900;
+    font-size:clamp(3rem,9vw,7rem);line-height:1;
+    color:#fff;
+    text-shadow:
+      0 0 6px #fff,
+      0 0 16px var(--neon-cyan),
+      0 0 32px var(--neon-cyan),
+      0 0 60px var(--neon-pink);
+    display:inline-block;
+    transition:transform .35s cubic-bezier(.4,2,.6,1);
+  }
+  .unit .num.flip{animation:flip .5s cubic-bezier(.4,2,.6,1)}
+  @keyframes flip{
+    0%{transform:rotateX(0) scale(1)}
+    50%{transform:rotateX(90deg) scale(1.15);color:var(--neon-yellow);text-shadow:0 0 20px var(--neon-yellow),0 0 40px var(--neon-pink)}
+    100%{transform:rotateX(0) scale(1)}
+  }
+  .unit .label{
+    margin-top:10px;
+    font-family:'Audiowide',sans-serif;
+    font-size:clamp(.75rem,1.3vw,1rem);
+    letter-spacing:.3em;
+    color:var(--neon-cyan);
+    text-shadow:0 0 6px var(--neon-cyan);
+  }
+
+  /* Names cards */
+  .names{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;max-width:1100px;margin:0 auto 50px;
+  }
+  .card{
+    position:relative;
+    background:rgba(255,255,255,.06);
+    backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+    border:1.5px solid rgba(0,240,255,.4);
+    border-radius:24px;
+    padding:28px 20px;text-align:center;
+    transition:transform .35s,box-shadow .35s,border-color .35s;
+    box-shadow:0 0 24px rgba(0,240,255,.25);
+    cursor:default;
+  }
+  .card:hover{
+    transform:translateY(-8px) rotate(-1.5deg) scale(1.03);
+    border-color:var(--neon-pink);
+    box-shadow:0 0 40px rgba(255,42,157,.55),0 0 80px rgba(166,75,255,.35);
+  }
+  .card .avatar{
+    width:120px;height:120px;border-radius:50%;
+    margin:0 auto 14px;display:block;
+    object-fit:cover;
+    border:3px solid var(--neon-cyan);
+    box-shadow:0 0 20px var(--neon-cyan),0 0 40px rgba(0,240,255,.4),inset 0 0 20px rgba(255,42,157,.2);
+    background:linear-gradient(135deg,rgba(255,42,157,.2),rgba(0,240,255,.2));
+    transition:border-color .35s,box-shadow .35s,transform .35s;
+  }
+  .card:hover .avatar{
+    border-color:var(--neon-pink);
+    box-shadow:0 0 30px var(--neon-pink),0 0 60px rgba(255,42,157,.5);
+    transform:scale(1.05);
+  }
+  .card .avatar.placeholder{
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Audiowide',sans-serif;font-size:2.6rem;
+    color:#fff;text-shadow:0 0 10px var(--neon-pink);
+  }
+  /* Settings: avatar uploader */
+  .name-row{display:flex;gap:10px;align-items:center;margin-bottom:10px;padding:8px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.08)}
+  .name-row .thumb{
+    width:44px;height:44px;border-radius:50%;flex-shrink:0;
+    object-fit:cover;border:2px solid var(--neon-cyan);cursor:pointer;
+    background:linear-gradient(135deg,rgba(255,42,157,.3),rgba(0,240,255,.3));
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.2rem;color:#fff;
+  }
+  .name-row .thumb:hover{border-color:var(--neon-pink)}
+  .name-row input[type="text"]{flex:1}
+  .name-row button{background:rgba(255,42,157,.2);border:1px solid var(--neon-pink);color:#fff;border-radius:8px;padding:0 12px;cursor:pointer}
+  .name-row button:hover{background:rgba(255,42,157,.4)}
+  .card .name{
+    font-family:'Audiowide',sans-serif;
+    font-size:1.8rem;
+    background:linear-gradient(90deg,var(--neon-pink),var(--neon-cyan));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    letter-spacing:.04em;
+  }
+  .card .tag{margin-top:6px;font-size:.85rem;color:#c7b6ff;font-style:italic}
+
+  /* Farewell */
+  .farewell{
+    max-width:820px;margin:0 auto;
+    background:rgba(10,5,30,.6);
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border:1.5px solid rgba(166,75,255,.45);
+    border-radius:24px;
+    padding:32px 28px;
+    box-shadow:0 0 40px rgba(166,75,255,.3);
+    line-height:1.85;
+    font-size:clamp(1rem,1.6vw,1.15rem);
+  }
+  .farewell strong{
+    background:linear-gradient(90deg,var(--neon-yellow),var(--neon-pink));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    font-weight:900;
+  }
+  .farewell p+p{margin-top:14px}
+  .farewell .sig{margin-top:22px;text-align:right;color:var(--neon-cyan);font-family:'Audiowide',sans-serif;letter-spacing:.1em}
+
+  /* Mission complete */
+  .complete{
+    text-align:center;padding:40px;
+    font-family:'Audiowide',sans-serif;
+    font-size:clamp(1.4rem,3vw,2.4rem);
+    background:linear-gradient(90deg,var(--neon-yellow),var(--neon-pink),var(--neon-cyan));
+    background-size:200% 100%;
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:gradient-shift 3s linear infinite;
+  }
+
+  /* Settings */
+  .settings-toggle{
+    position:fixed;top:20px;right:20px;z-index:10;
+    width:54px;height:54px;border-radius:50%;
+    border:1.5px solid var(--neon-cyan);
+    background:rgba(10,5,30,.7);backdrop-filter:blur(10px);
+    color:var(--neon-cyan);font-size:1.6rem;cursor:pointer;
+    box-shadow:0 0 20px rgba(0,240,255,.5);
+    transition:transform .3s;
+  }
+  .settings-toggle:hover{transform:rotate(90deg) scale(1.1)}
+
+  .settings-panel{
+    position:fixed;top:0;right:0;bottom:0;z-index:20;
+    width:min(420px,100%);
+    background:rgba(8,3,25,.96);
+    backdrop-filter:blur(20px);
+    border-left:1.5px solid rgba(255,42,157,.5);
+    padding:70px 24px 24px;
+    overflow-y:auto;
+    transform:translateX(100%);
+    transition:transform .4s cubic-bezier(.4,0,.2,1);
+    box-shadow:-20px 0 60px rgba(0,0,0,.6);
+  }
+  .settings-panel.open{transform:translateX(0)}
+  .settings-panel h2{
+    font-family:'Audiowide',sans-serif;
+    color:var(--neon-pink);
+    margin-bottom:20px;letter-spacing:.1em;
+    text-shadow:0 0 10px var(--neon-pink);
+  }
+  .settings-panel label{display:block;margin-bottom:8px;color:var(--neon-cyan);font-size:.85rem;letter-spacing:.1em;text-transform:uppercase}
+  .settings-panel input[type="datetime-local"],
+  .settings-panel input[type="text"]{
+    width:100%;padding:10px 12px;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(0,240,255,.4);
+    border-radius:10px;color:#fff;font-family:inherit;font-size:1rem;
+    outline:none;transition:border-color .3s,box-shadow .3s;
+  }
+  .settings-panel input:focus{
+    border-color:var(--neon-pink);
+    box-shadow:0 0 12px rgba(255,42,157,.5);
+  }
+  .settings-panel .row{display:flex;gap:8px;margin-bottom:8px}
+  .settings-panel .row button{
+    background:rgba(255,42,157,.2);border:1px solid var(--neon-pink);color:#fff;
+    border-radius:8px;padding:0 12px;cursor:pointer;transition:background .2s;
+  }
+  .settings-panel .row button:hover{background:rgba(255,42,157,.4)}
+  .settings-panel .section{margin-bottom:24px}
+  .settings-panel .actions{display:flex;gap:10px;margin-top:18px}
+  .settings-panel .actions button{
+    flex:1;padding:12px;border-radius:10px;border:none;cursor:pointer;
+    font-family:'Audiowide',sans-serif;letter-spacing:.1em;font-size:.9rem;
+    transition:transform .2s,box-shadow .2s;
+  }
+  .btn-save{background:linear-gradient(90deg,var(--neon-cyan),var(--neon-purple));color:#fff;box-shadow:0 0 14px rgba(0,240,255,.5)}
+  .btn-reset{background:transparent;color:var(--neon-pink);border:1px solid var(--neon-pink)!important}
+  .btn-publish{
+    width:100%;margin-top:14px;padding:14px;border-radius:12px;border:none;cursor:pointer;
+    font-family:'Audiowide',sans-serif;letter-spacing:.2em;font-size:1rem;
+    background:linear-gradient(90deg,var(--neon-pink),var(--neon-yellow));color:#0a0520;font-weight:900;
+    box-shadow:0 0 20px rgba(255,230,0,.5),0 0 40px rgba(255,42,157,.4);
+    transition:transform .2s,box-shadow .2s;
+  }
+  .btn-publish:hover{transform:translateY(-2px);box-shadow:0 0 30px rgba(255,230,0,.7),0 0 60px rgba(255,42,157,.6)}
+  .publish-hint{margin-top:10px;font-size:.78rem;color:#c7b6ff;text-align:center;opacity:.75;line-height:1.5}
+  .published-badge{
+    position:fixed;bottom:16px;left:50%;transform:translateX(-50%);
+    padding:8px 18px;border-radius:20px;z-index:5;
+    background:rgba(10,5,30,.6);backdrop-filter:blur(10px);
+    border:1px solid rgba(0,240,255,.4);
+    font-family:'Audiowide',sans-serif;font-size:.72rem;letter-spacing:.25em;
+    color:var(--neon-cyan);text-shadow:0 0 8px var(--neon-cyan);
+    opacity:.7;
+  }
+  .settings-panel .actions button:hover{transform:translateY(-2px);box-shadow:0 0 20px rgba(255,42,157,.5)}
+  .settings-panel .close{
+    position:absolute;top:16px;right:16px;background:transparent;border:none;
+    color:#fff;font-size:1.8rem;cursor:pointer;opacity:.7;
+  }
+  .settings-panel .close:hover{opacity:1;color:var(--neon-pink)}
+
+  /* Responsive */
+  @media (max-width:640px){
+    .countdown{grid-template-columns:repeat(2,1fr)}
+  }
+</style>
+</head>
+<body>
+  <div class="bg-animation"></div>
+  <div class="particles" id="particles"></div>
+
+  <header class="title">
+    <h1>🔥 MISSION: BANK FINALE 🔥</h1>
+    <p>T-minus countdown ก่อน <span class="names-inline" id="names-inline">หวาย × กอล์ฟ × พี</span> จะ log out จากตึกธนาคารอย่างเป็นทางการ 🏦⚡</p>
+  </header>
+
+  <section class="countdown" id="countdown">
+    <div class="unit"><div class="num" id="num-days">00</div><div class="label">DAYS</div></div>
+    <div class="unit"><div class="num" id="num-hours">00</div><div class="label">HOURS</div></div>
+    <div class="unit"><div class="num" id="num-minutes">00</div><div class="label">MINUTES</div></div>
+    <div class="unit"><div class="num" id="num-seconds">00</div><div class="label">SECONDS</div></div>
+  </section>
+
+  <section class="names" id="names-grid"></section>
+
+  <section class="farewell" id="farewell">
+    <p>📢 อีก <strong id="farewell-days">10</strong> วัน พวกเรา <strong id="farewell-names">หวาย • กอล์ฟ • พี</strong> จะเก็บของ ถอด ID card แล้ว log out จากฝั่งธนาคารอย่างเป็นทางการ 🎤⬇️</p>
+    <p>ขอบคุณพี่ๆทุกคนจากใจจริง ที่เปิดประตู ให้โอกาส คอย carry และสอนพวกผมมาตลอดเส้นทางนี้ 🙏✨ ทุก lesson ทุก moment จะขอเก็บไว้ในเซฟ level สูงสุดของ memory bank 💾💎</p>
+    <p>ถ้าช่วงที่ผ่านมาผมเผลอไปเหยียบตาปลาใคร พูดแรง ทำพลาด หรือปั่นจนพี่ปวดหัว — ต้องขออภัยจากใจนะครับ 🥹 แต่ถ้าอภัยไม่ไหวจริงๆ... ก็ <strong>ฮึบไว้นะครับพี่ 💪😂🔥</strong></p>
+    <p class="sig">— ด้วยรักและความนับถือ 💜</p>
+  </section>
+
+  <button class="settings-toggle" id="settings-toggle" title="Settings">⚙️</button>
+
+  <aside class="settings-panel" id="settings-panel">
+    <button class="close" id="settings-close">×</button>
+    <h2>⚡ Control Panel</h2>
+
+    <div class="section">
+      <label for="target-date">Effective Date</label>
+      <input type="datetime-local" id="target-date">
+    </div>
+
+    <div class="section">
+      <label>Team Members</label>
+      <div id="name-list"></div>
+      <div class="row" style="margin-top:10px">
+        <input type="text" id="new-name" placeholder="เพิ่มชื่อ...">
+        <button id="add-name">+ เพิ่ม</button>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn-save" id="btn-save">💾 SAVE</button>
+      <button class="btn-reset" id="btn-reset">↺ RESET</button>
+    </div>
+
+    <button class="btn-publish" id="btn-publish">🚀 PUBLISH</button>
+    <p class="publish-hint">พอ Publish แล้ว ปุ่ม ⚙️ จะหายไป<br>กด <b>Shift + U</b> 3 ครั้งเพื่อปลดล็อกแก้ไขอีกครั้ง</p>
+  </aside>
+
+<script>
+(() => {
+  const STORAGE_KEY = 'farewell.config.v2';
+  const TAGS = [
+    'Legend of the trading floor',
+    'The final boss of banking',
+    'Log out in style',
+    'Vibes only, stress never',
+    'Main character energy',
+    'Retired from the matrix',
+    'Boss mode: activated',
+  ];
+
+  function defaultConfig(){
+    const d = new Date();
+    d.setDate(d.getDate()+10);
+    d.setHours(17,0,0,0);
+    return {
+      targetDate: d.toISOString(),
+      published: false,
+      members: [
+        {name:'หวาย', photo:''},
+        {name:'กอล์ฟ', photo:''},
+        {name:'พี', photo:''},
+      ]
+    };
+  }
+
+  function loadConfig(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw){
+        // migrate from v1
+        const old = localStorage.getItem('farewell.config.v1');
+        if(old){
+          const p = JSON.parse(old);
+          if(p && Array.isArray(p.names)){
+            return {
+              targetDate: p.targetDate,
+              members: p.names.map(n=>({name:n,photo:''}))
+            };
+          }
+        }
+        return defaultConfig();
+      }
+      const parsed = JSON.parse(raw);
+      if(!parsed.targetDate || !Array.isArray(parsed.members)) return defaultConfig();
+      return parsed;
+    }catch(e){ return defaultConfig(); }
+  }
+
+  function saveConfig(cfg){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(cfg));
+  }
+
+  let config = loadConfig();
+
+  // --- Particles ---
+  const particlesEl = document.getElementById('particles');
+  for(let i=0;i<40;i++){
+    const s = document.createElement('span');
+    const size = Math.random()*6+3;
+    s.style.width = s.style.height = size+'px';
+    s.style.left = (Math.random()*100)+'%';
+    s.style.animationDuration = (Math.random()*12+8)+'s';
+    s.style.animationDelay = (Math.random()*10)+'s';
+    particlesEl.appendChild(s);
+  }
+
+  // --- Elements ---
+  const el = {
+    days: document.getElementById('num-days'),
+    hours: document.getElementById('num-hours'),
+    minutes: document.getElementById('num-minutes'),
+    seconds: document.getElementById('num-seconds'),
+    countdown: document.getElementById('countdown'),
+    namesInline: document.getElementById('names-inline'),
+    namesGrid: document.getElementById('names-grid'),
+    farewellDays: document.getElementById('farewell-days'),
+    farewellNames: document.getElementById('farewell-names'),
+    farewell: document.getElementById('farewell'),
+    targetDateInput: document.getElementById('target-date'),
+    nameList: document.getElementById('name-list'),
+    newName: document.getElementById('new-name'),
+    addName: document.getElementById('add-name'),
+    btnSave: document.getElementById('btn-save'),
+    btnReset: document.getElementById('btn-reset'),
+    btnPublish: document.getElementById('btn-publish'),
+    settingsToggle: document.getElementById('settings-toggle'),
+    settingsPanel: document.getElementById('settings-panel'),
+    settingsClose: document.getElementById('settings-close'),
+  };
+
+  function pad(n){ return String(Math.max(0,n)).padStart(2,'0'); }
+
+  function toLocalInput(iso){
+    const d = new Date(iso);
+    const pad2 = n => String(n).padStart(2,'0');
+    return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}T${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+  }
+
+  function renderNames(){
+    const members = config.members;
+    const names = members.map(m=>m.name);
+    el.namesInline.textContent = names.join(' × ') || '—';
+    el.farewellNames.textContent = names.join(' • ') || '—';
+
+    // grid cards
+    el.namesGrid.innerHTML = '';
+    members.forEach((m,i)=>{
+      const card = document.createElement('div');
+      card.className = 'card';
+      const initial = (m.name || '?').trim().charAt(0).toUpperCase();
+      const avatar = m.photo
+        ? `<img class="avatar" src="${escapeAttr(m.photo)}" alt="${escapeAttr(m.name)}">`
+        : `<div class="avatar placeholder">${escapeHtml(initial)}</div>`;
+      card.innerHTML = `
+        ${avatar}
+        <div class="name">${escapeHtml(m.name)}</div>
+        <div class="tag">${escapeHtml(TAGS[i % TAGS.length])}</div>
+      `;
+      el.namesGrid.appendChild(card);
+    });
+
+    // settings list
+    el.nameList.innerHTML = '';
+    members.forEach((m,i)=>{
+      const row = document.createElement('div');
+      row.className = 'name-row';
+      const initial = (m.name || '?').trim().charAt(0).toUpperCase();
+      const thumb = m.photo
+        ? `<img class="thumb" src="${escapeAttr(m.photo)}" data-upload="${i}" title="คลิกเพื่อเปลี่ยนรูป">`
+        : `<div class="thumb" data-upload="${i}" title="คลิกเพื่ออัพโหลดรูป">${escapeHtml(initial)}</div>`;
+      row.innerHTML = `
+        ${thumb}
+        <input type="text" value="${escapeAttr(m.name)}" data-idx="${i}" placeholder="ชื่อ">
+        <button data-remove="${i}" title="ลบ">✕</button>
+      `;
+      el.nameList.appendChild(row);
+    });
+    el.nameList.querySelectorAll('input[type="text"]').forEach(inp=>{
+      inp.addEventListener('input', e=>{
+        const idx = +e.target.dataset.idx;
+        config.members[idx].name = e.target.value;
+      });
+    });
+    el.nameList.querySelectorAll('button[data-remove]').forEach(btn=>{
+      btn.addEventListener('click', e=>{
+        const idx = +e.target.currentTarget?.dataset?.remove ?? +e.target.dataset.remove;
+        config.members.splice(idx,1);
+        renderNames();
+      });
+    });
+    el.nameList.querySelectorAll('[data-upload]').forEach(thumb=>{
+      thumb.addEventListener('click', ()=>{
+        const idx = +thumb.dataset.upload;
+        pickPhoto(idx);
+      });
+    });
+  }
+
+  function pickPhoto(idx){
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.addEventListener('change', ()=>{
+      const file = input.files && input.files[0];
+      if(!file) return;
+      resizeImage(file, 400).then(dataUrl=>{
+        config.members[idx].photo = dataUrl;
+        renderNames();
+      }).catch(err=>{
+        alert('อัพโหลดรูปไม่สำเร็จ: '+err.message);
+      });
+    });
+    input.click();
+  }
+
+  function resizeImage(file, maxSize){
+    return new Promise((resolve,reject)=>{
+      const reader = new FileReader();
+      reader.onerror = ()=>reject(new Error('อ่านไฟล์ไม่ได้'));
+      reader.onload = ()=>{
+        const img = new Image();
+        img.onerror = ()=>reject(new Error('รูปเสีย'));
+        img.onload = ()=>{
+          let {width,height} = img;
+          const scale = Math.min(1, maxSize/Math.max(width,height));
+          width = Math.round(width*scale);
+          height = Math.round(height*scale);
+          const canvas = document.createElement('canvas');
+          canvas.width = width; canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img,0,0,width,height);
+          resolve(canvas.toDataURL('image/jpeg',0.85));
+        };
+        img.src = reader.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  function escapeAttr(s){ return escapeHtml(s); }
+
+  let prev = {d:null,h:null,m:null,s:null};
+  function setNum(elm, val, key){
+    const str = pad(val);
+    if(prev[key] !== str){
+      elm.textContent = str;
+      elm.classList.remove('flip');
+      void elm.offsetWidth;
+      elm.classList.add('flip');
+      prev[key] = str;
+    }
+  }
+
+  function tick(){
+    const now = Date.now();
+    const target = new Date(config.targetDate).getTime();
+    const diff = target - now;
+    if(isNaN(target)) return;
+
+    if(diff <= 0){
+      el.countdown.innerHTML = '<div class="complete" style="grid-column:1/-1">🎉 MISSION COMPLETE — เจอกันฝั่งใหม่! 🚀✨</div>';
+      el.farewellDays.textContent = '0';
+      return;
+    }
+
+    const days = Math.floor(diff/86400000);
+    const hours = Math.floor((diff%86400000)/3600000);
+    const minutes = Math.floor((diff%3600000)/60000);
+    const seconds = Math.floor((diff%60000)/1000);
+
+    setNum(el.days, days, 'd');
+    setNum(el.hours, hours, 'h');
+    setNum(el.minutes, minutes, 'm');
+    setNum(el.seconds, seconds, 's');
+    el.farewellDays.textContent = days;
+  }
+
+  function renderAll(){
+    renderNames();
+    el.targetDateInput.value = toLocalInput(config.targetDate);
+    // rebuild countdown if completed previously
+    if(!document.getElementById('num-days')){
+      el.countdown.innerHTML = `
+        <div class="unit"><div class="num" id="num-days">00</div><div class="label">DAYS</div></div>
+        <div class="unit"><div class="num" id="num-hours">00</div><div class="label">HOURS</div></div>
+        <div class="unit"><div class="num" id="num-minutes">00</div><div class="label">MINUTES</div></div>
+        <div class="unit"><div class="num" id="num-seconds">00</div><div class="label">SECONDS</div></div>`;
+      el.days = document.getElementById('num-days');
+      el.hours = document.getElementById('num-hours');
+      el.minutes = document.getElementById('num-minutes');
+      el.seconds = document.getElementById('num-seconds');
+      prev = {d:null,h:null,m:null,s:null};
+    }
+    tick();
+  }
+
+  // --- Events ---
+  el.settingsToggle.addEventListener('click', ()=> el.settingsPanel.classList.toggle('open'));
+  el.settingsClose.addEventListener('click', ()=> el.settingsPanel.classList.remove('open'));
+
+  el.addName.addEventListener('click', ()=>{
+    const v = el.newName.value.trim();
+    if(!v) return;
+    config.members.push({name:v, photo:''});
+    el.newName.value = '';
+    renderNames();
+  });
+  el.newName.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); el.addName.click(); }});
+
+  el.btnSave.addEventListener('click', ()=>{
+    const val = el.targetDateInput.value;
+    if(val){
+      const d = new Date(val);
+      if(!isNaN(d)) config.targetDate = d.toISOString();
+    }
+    config.members = config.members
+      .map(m => ({name:(m.name||'').trim(), photo:m.photo||''}))
+      .filter(m => m.name);
+    if(config.members.length === 0){
+      config.members = [{name:'หวาย',photo:''},{name:'กอล์ฟ',photo:''},{name:'พี',photo:''}];
+    }
+    try{
+      saveConfig(config);
+    }catch(e){
+      alert('บันทึกไม่สำเร็จ (รูปอาจใหญ่เกินไป): '+e.message);
+      return;
+    }
+    renderAll();
+    el.settingsPanel.classList.remove('open');
+    flashSave();
+  });
+
+  el.btnReset.addEventListener('click', ()=>{
+    if(!confirm('รีเซ็ตกลับเป็นค่าเริ่มต้น?')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    config = loadConfig();
+    applyPublishState();
+    renderAll();
+  });
+
+  el.btnPublish.addEventListener('click', ()=>{
+    if(!confirm('Publish เลยมั้ย? ปุ่ม ⚙️ จะหายไป และข้อมูลจะถูกล็อก (กด Shift+U 3 ครั้งเพื่อปลดล็อก)')) return;
+    // bake current edits first
+    const val = el.targetDateInput.value;
+    if(val){
+      const d = new Date(val);
+      if(!isNaN(d)) config.targetDate = d.toISOString();
+    }
+    config.members = config.members
+      .map(m => ({name:(m.name||'').trim(), photo:m.photo||''}))
+      .filter(m => m.name);
+    if(config.members.length === 0){
+      config.members = [{name:'หวาย',photo:''},{name:'กอล์ฟ',photo:''},{name:'พี',photo:''}];
+    }
+    config.published = true;
+    try{ saveConfig(config); }
+    catch(e){ alert('บันทึกไม่สำเร็จ: '+e.message); return; }
+    el.settingsPanel.classList.remove('open');
+    applyPublishState();
+    renderAll();
+  });
+
+  function applyPublishState(){
+    const locked = !!config.published;
+    el.settingsToggle.style.display = locked ? 'none' : '';
+    let badge = document.getElementById('published-badge');
+    if(locked){
+      if(!badge){
+        badge = document.createElement('div');
+        badge.id = 'published-badge';
+        badge.className = 'published-badge';
+        badge.textContent = '● PUBLISHED';
+        document.body.appendChild(badge);
+      }
+    }else if(badge){
+      badge.remove();
+    }
+  }
+
+  // Secret unlock: press Shift+U three times within 2s
+  let unlockHits = [];
+  document.addEventListener('keydown', e=>{
+    if(e.shiftKey && (e.key === 'U' || e.key === 'u')){
+      const now = Date.now();
+      unlockHits = unlockHits.filter(t => now - t < 2000);
+      unlockHits.push(now);
+      if(unlockHits.length >= 3 && config.published){
+        config.published = false;
+        saveConfig(config);
+        applyPublishState();
+        el.settingsPanel.classList.add('open');
+        unlockHits = [];
+        flashMessage('🔓 UNLOCKED');
+      }
+    }
+  });
+
+  function flashMessage(text){
+    const flash = document.createElement('div');
+    flash.textContent = text;
+    flash.style.cssText = `
+      position:fixed;top:30px;left:50%;transform:translateX(-50%);
+      background:linear-gradient(90deg,#00f0ff,#a64bff);color:#fff;
+      padding:14px 28px;border-radius:14px;font-family:'Audiowide',sans-serif;
+      letter-spacing:.2em;z-index:100;box-shadow:0 0 30px rgba(0,240,255,.6);
+      animation:flashIn .4s ease,flashOut .4s ease 1.4s forwards;
+    `;
+    document.body.appendChild(flash);
+    setTimeout(()=>flash.remove(), 1900);
+  }
+
+  function flashSave(){
+    const flash = document.createElement('div');
+    flash.textContent = '✅ SAVED';
+    flash.style.cssText = `
+      position:fixed;top:30px;left:50%;transform:translateX(-50%);
+      background:linear-gradient(90deg,#00f0ff,#a64bff);color:#fff;
+      padding:14px 28px;border-radius:14px;font-family:'Audiowide',sans-serif;
+      letter-spacing:.2em;z-index:100;box-shadow:0 0 30px rgba(0,240,255,.6);
+      animation:flashIn .4s ease,flashOut .4s ease 1.4s forwards;
+    `;
+    document.body.appendChild(flash);
+    setTimeout(()=>flash.remove(), 1900);
+  }
+  const styleEl = document.createElement('style');
+  styleEl.textContent = `@keyframes flashIn{from{opacity:0;transform:translate(-50%,-20px)}to{opacity:1;transform:translate(-50%,0)}}@keyframes flashOut{to{opacity:0;transform:translate(-50%,-20px)}}`;
+  document.head.appendChild(styleEl);
+
+  // --- Boot ---
+  applyPublishState();
+  renderAll();
+  setInterval(tick, 1000);
+})();
+</script>
+</body>
+</html>
