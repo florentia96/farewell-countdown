@@ -323,7 +323,7 @@
 </style>
 </head>
 <body>
-  <script id="baked-config" type="application/json">{}</script>
+  <script id="baked-config" type="application/json">{"targetDate": "2026-05-01T17:00:00", "members": [{"name": "หวาย", "photo": ""}, {"name": "กอล์ฟ", "photo": ""}, {"name": "พี", "photo": ""}]}</script>
   <div class="bg-animation"></div>
   <div class="particles" id="particles"></div>
 
@@ -348,98 +348,16 @@
     <p class="sig">— ด้วยรักและความนับถือ 💜</p>
   </section>
 
-  <button class="settings-toggle" id="settings-toggle" title="Settings">⚙️</button>
-
-  <aside class="settings-panel" id="settings-panel">
-    <button class="close" id="settings-close">×</button>
-    <h2>⚡ Control Panel</h2>
-
-    <div class="section">
-      <label for="target-date">Effective Date</label>
-      <input type="datetime-local" id="target-date">
-    </div>
-
-    <div class="section">
-      <label>Team Members</label>
-      <div id="name-list"></div>
-      <div class="row" style="margin-top:10px">
-        <input type="text" id="new-name" placeholder="เพิ่มชื่อ...">
-        <button id="add-name">+ เพิ่ม</button>
-      </div>
-    </div>
-
-    <div class="actions">
-      <button class="btn-save" id="btn-save">💾 SAVE</button>
-      <button class="btn-reset" id="btn-reset">↺ RESET</button>
-    </div>
-
-    <button class="btn-publish" id="btn-publish">🚀 PUBLISH (Download index.html)</button>
-    <p class="publish-hint">กด Publish แล้วจะได้ไฟล์ <b>index.html</b> ฝังข้อมูลปัจจุบัน<br>เอาไฟล์นี้ไปแทนที่ใน GitHub repo เพื่อเผยแพร่ให้คนอื่นดู</p>
-  </aside>
-
 <script>
 (() => {
-  const STORAGE_KEY = 'farewell.config.v2';
-  const EDIT_SECRET = 'edit987654321';
-  const EDIT_MODE = new URLSearchParams(location.search).has(EDIT_SECRET)
-    || location.hash === '#' + EDIT_SECRET
-    || location.search.includes(EDIT_SECRET);
-  const TAGS = [
-    'Legend of the trading floor',
-    'The final boss of banking',
-    'Log out in style',
-    'Vibes only, stress never',
-    'Main character energy',
-    'Retired from the matrix',
-    'Boss mode: activated',
-  ];
+  const TAGS = ["Legend of the trading floor","The final boss of banking","Log out in style","Vibes only, stress never","Main character energy","Retired from the matrix","Boss mode: activated"];
+  const pad = n => String(Math.max(0,n)).padStart(2,'0');
+  function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+  let cfg = {};
+  try{ cfg = JSON.parse(document.getElementById('baked-config').textContent || '{}'); }catch(e){}
+  const members = Array.isArray(cfg.members) ? cfg.members : [];
+  const target = new Date(cfg.targetDate).getTime();
 
-  function defaultConfig(){
-    const d = new Date();
-    d.setDate(d.getDate()+10);
-    d.setHours(17,0,0,0);
-    return {
-      targetDate: d.toISOString(),
-      published: false,
-      members: [
-        {name:'หวาย', photo:''},
-        {name:'กอล์ฟ', photo:''},
-        {name:'พี', photo:''},
-      ]
-    };
-  }
-
-  function loadBakedConfig(){
-    try{
-      const raw = document.getElementById('baked-config')?.textContent?.trim();
-      if(!raw || raw === '{}') return null;
-      const p = JSON.parse(raw);
-      if(!p.targetDate || !Array.isArray(p.members)) return null;
-      return p;
-    }catch(e){ return null; }
-  }
-
-  function loadConfig(){
-    const baked = loadBakedConfig();
-    // Viewers always see the baked config; localStorage only in edit mode
-    if(!EDIT_MODE) return baked || defaultConfig();
-    try{
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if(raw){
-        const parsed = JSON.parse(raw);
-        if(parsed.targetDate && Array.isArray(parsed.members)) return parsed;
-      }
-    }catch(e){}
-    return baked || defaultConfig();
-  }
-
-  function saveConfig(cfg){
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(cfg));
-  }
-
-  let config = loadConfig();
-
-  // --- Particles ---
   const particlesEl = document.getElementById('particles');
   for(let i=0;i<40;i++){
     const s = document.createElement('span');
@@ -451,326 +369,61 @@
     particlesEl.appendChild(s);
   }
 
-  // --- Elements ---
-  const el = {
-    days: document.getElementById('num-days'),
-    hours: document.getElementById('num-hours'),
-    minutes: document.getElementById('num-minutes'),
-    seconds: document.getElementById('num-seconds'),
-    countdown: document.getElementById('countdown'),
-    namesInline: document.getElementById('names-inline'),
-    namesGrid: document.getElementById('names-grid'),
-    farewellDays: document.getElementById('farewell-days'),
-    farewellNames: document.getElementById('farewell-names'),
-    farewell: document.getElementById('farewell'),
-    targetDateInput: document.getElementById('target-date'),
-    nameList: document.getElementById('name-list'),
-    newName: document.getElementById('new-name'),
-    addName: document.getElementById('add-name'),
-    btnSave: document.getElementById('btn-save'),
-    btnReset: document.getElementById('btn-reset'),
-    btnPublish: document.getElementById('btn-publish'),
-    settingsToggle: document.getElementById('settings-toggle'),
-    settingsPanel: document.getElementById('settings-panel'),
-    settingsClose: document.getElementById('settings-close'),
-  };
+  const grid = document.getElementById('names-grid');
+  const namesInline = document.getElementById('names-inline');
+  const farewellNames = document.getElementById('farewell-names');
+  const names = members.map(m=>m.name);
+  if(namesInline) namesInline.textContent = names.join(' \u00d7 ') || '\u2014';
+  if(farewellNames) farewellNames.textContent = names.join(' \u2022 ') || '\u2014';
+  members.forEach((m,i)=>{
+    const card = document.createElement('div');
+    card.className = 'card';
+    const initial = (m.name||'?').trim().charAt(0).toUpperCase();
+    const avatar = m.photo
+      ? '<img class="avatar" src="'+m.photo+'" alt="">'
+      : '<div class="avatar placeholder">'+escapeHtml(initial)+'</div>';
+    card.innerHTML = avatar + '<div class="name">'+escapeHtml(m.name)+'</div><div class="tag">'+escapeHtml(TAGS[i%TAGS.length])+'</div>';
+    grid.appendChild(card);
+  });
 
-  function pad(n){ return String(Math.max(0,n)).padStart(2,'0'); }
-
-  function toLocalInput(iso){
-    const d = new Date(iso);
-    const pad2 = n => String(n).padStart(2,'0');
-    return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}T${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
-  }
-
-  function renderNames(){
-    const members = config.members;
-    const names = members.map(m=>m.name);
-    el.namesInline.textContent = names.join(' × ') || '—';
-    el.farewellNames.textContent = names.join(' • ') || '—';
-
-    // grid cards
-    el.namesGrid.innerHTML = '';
-    members.forEach((m,i)=>{
-      const card = document.createElement('div');
-      card.className = 'card';
-      const initial = (m.name || '?').trim().charAt(0).toUpperCase();
-      const avatar = m.photo
-        ? `<img class="avatar" src="${escapeAttr(m.photo)}" alt="${escapeAttr(m.name)}">`
-        : `<div class="avatar placeholder">${escapeHtml(initial)}</div>`;
-      card.innerHTML = `
-        ${avatar}
-        <div class="name">${escapeHtml(m.name)}</div>
-        <div class="tag">${escapeHtml(TAGS[i % TAGS.length])}</div>
-      `;
-      el.namesGrid.appendChild(card);
-    });
-
-    // settings list
-    el.nameList.innerHTML = '';
-    members.forEach((m,i)=>{
-      const row = document.createElement('div');
-      row.className = 'name-row';
-      const initial = (m.name || '?').trim().charAt(0).toUpperCase();
-      const thumb = m.photo
-        ? `<img class="thumb" src="${escapeAttr(m.photo)}" data-upload="${i}" title="คลิกเพื่อเปลี่ยนรูป">`
-        : `<div class="thumb" data-upload="${i}" title="คลิกเพื่ออัพโหลดรูป">${escapeHtml(initial)}</div>`;
-      row.innerHTML = `
-        ${thumb}
-        <input type="text" value="${escapeAttr(m.name)}" data-idx="${i}" placeholder="ชื่อ">
-        <button data-remove="${i}" title="ลบ">✕</button>
-      `;
-      el.nameList.appendChild(row);
-    });
-    el.nameList.querySelectorAll('input[type="text"]').forEach(inp=>{
-      inp.addEventListener('input', e=>{
-        const idx = +e.target.dataset.idx;
-        config.members[idx].name = e.target.value;
-      });
-    });
-    el.nameList.querySelectorAll('button[data-remove]').forEach(btn=>{
-      btn.addEventListener('click', e=>{
-        const idx = +e.target.currentTarget?.dataset?.remove ?? +e.target.dataset.remove;
-        config.members.splice(idx,1);
-        renderNames();
-      });
-    });
-    el.nameList.querySelectorAll('[data-upload]').forEach(thumb=>{
-      thumb.addEventListener('click', ()=>{
-        const idx = +thumb.dataset.upload;
-        pickPhoto(idx);
-      });
-    });
-  }
-
-  function pickPhoto(idx){
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*';
-    input.addEventListener('change', ()=>{
-      const file = input.files && input.files[0];
-      if(!file) return;
-      resizeImage(file, 400).then(dataUrl=>{
-        config.members[idx].photo = dataUrl;
-        renderNames();
-      }).catch(err=>{
-        alert('อัพโหลดรูปไม่สำเร็จ: '+err.message);
-      });
-    });
-    input.click();
-  }
-
-  function resizeImage(file, maxSize){
-    return new Promise((resolve,reject)=>{
-      const reader = new FileReader();
-      reader.onerror = ()=>reject(new Error('อ่านไฟล์ไม่ได้'));
-      reader.onload = ()=>{
-        const img = new Image();
-        img.onerror = ()=>reject(new Error('รูปเสีย'));
-        img.onload = ()=>{
-          let {width,height} = img;
-          const scale = Math.min(1, maxSize/Math.max(width,height));
-          width = Math.round(width*scale);
-          height = Math.round(height*scale);
-          const canvas = document.createElement('canvas');
-          canvas.width = width; canvas.height = height;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img,0,0,width,height);
-          resolve(canvas.toDataURL('image/jpeg',0.85));
-        };
-        img.src = reader.result;
-      };
-      reader.readAsDataURL(file);
-    });
-  }
-
-  function escapeHtml(s){
-    return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  }
-  function escapeAttr(s){ return escapeHtml(s); }
-
+  const elDays = document.getElementById('num-days');
+  const elHours = document.getElementById('num-hours');
+  const elMinutes = document.getElementById('num-minutes');
+  const elSeconds = document.getElementById('num-seconds');
+  const countdown = document.getElementById('countdown');
+  const farewellDays = document.getElementById('farewell-days');
   let prev = {d:null,h:null,m:null,s:null};
-  function setNum(elm, val, key){
-    const str = pad(val);
-    if(prev[key] !== str){
-      elm.textContent = str;
-      elm.classList.remove('flip');
-      void elm.offsetWidth;
-      elm.classList.add('flip');
-      prev[key] = str;
+  function setNum(e,v,k){
+    const s = pad(v);
+    if(prev[k]!==s){
+      e.textContent = s;
+      e.classList.remove('flip'); void e.offsetWidth; e.classList.add('flip');
+      prev[k] = s;
     }
   }
-
   function tick(){
-    const now = Date.now();
-    const target = new Date(config.targetDate).getTime();
-    const diff = target - now;
     if(isNaN(target)) return;
-
+    const diff = target - Date.now();
     if(diff <= 0){
-      el.countdown.innerHTML = '<div class="complete" style="grid-column:1/-1">🎉 MISSION COMPLETE — เจอกันฝั่งใหม่! 🚀✨</div>';
-      el.farewellDays.textContent = '0';
+      countdown.innerHTML = '<div class="complete" style="grid-column:1/-1">\ud83c\udf89 MISSION COMPLETE \u2014 \u0e40\u0e08\u0e2d\u0e01\u0e31\u0e19\u0e1d\u0e31\u0e48\u0e07\u0e43\u0e2b\u0e21\u0e48! \ud83d\ude80\u2728</div>';
+      if(farewellDays) farewellDays.textContent = '0';
       return;
     }
-
-    const days = Math.floor(diff/86400000);
-    const hours = Math.floor((diff%86400000)/3600000);
-    const minutes = Math.floor((diff%3600000)/60000);
-    const seconds = Math.floor((diff%60000)/1000);
-
-    const secChanged = pad(seconds) !== prev.s;
-    setNum(el.days, days, 'd');
-    setNum(el.hours, hours, 'h');
-    setNum(el.minutes, minutes, 'm');
-    setNum(el.seconds, seconds, 's');
+    const d = Math.floor(diff/86400000);
+    const h = Math.floor((diff%86400000)/3600000);
+    const m = Math.floor((diff%3600000)/60000);
+    const s = Math.floor((diff%60000)/1000);
+    const secChanged = pad(s) !== prev.s;
+    setNum(elDays,d,'d'); setNum(elHours,h,'h'); setNum(elMinutes,m,'m'); setNum(elSeconds,s,'s');
     if(secChanged){
-      [el.days, el.hours, el.minutes].forEach(n=>{
+      [elDays,elHours,elMinutes].forEach(n=>{
         if(!n) return;
-        n.classList.remove('blink');
-        void n.offsetWidth;
-        n.classList.add('blink');
+        n.classList.remove('blink'); void n.offsetWidth; n.classList.add('blink');
       });
     }
-    el.farewellDays.textContent = days;
+    if(farewellDays) farewellDays.textContent = d;
   }
-
-  function renderAll(){
-    renderNames();
-    el.targetDateInput.value = toLocalInput(config.targetDate);
-    // rebuild countdown if completed previously
-    if(!document.getElementById('num-days')){
-      el.countdown.innerHTML = `
-        <div class="unit"><div class="num" id="num-days">00</div><div class="label">DAYS</div></div>
-        <div class="unit"><div class="num" id="num-hours">00</div><div class="label">HOURS</div></div>
-        <div class="unit"><div class="num" id="num-minutes">00</div><div class="label">MINUTES</div></div>
-        <div class="unit"><div class="num" id="num-seconds">00</div><div class="label">SECONDS</div></div>`;
-      el.days = document.getElementById('num-days');
-      el.hours = document.getElementById('num-hours');
-      el.minutes = document.getElementById('num-minutes');
-      el.seconds = document.getElementById('num-seconds');
-      prev = {d:null,h:null,m:null,s:null};
-    }
-    tick();
-  }
-
-  // --- Events ---
-  el.settingsToggle.addEventListener('click', ()=> el.settingsPanel.classList.toggle('open'));
-  el.settingsClose.addEventListener('click', ()=> el.settingsPanel.classList.remove('open'));
-
-  el.addName.addEventListener('click', ()=>{
-    const v = el.newName.value.trim();
-    if(!v) return;
-    config.members.push({name:v, photo:''});
-    el.newName.value = '';
-    renderNames();
-  });
-  el.newName.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); el.addName.click(); }});
-
-  el.btnSave.addEventListener('click', ()=>{
-    const val = el.targetDateInput.value;
-    if(val){
-      const d = new Date(val);
-      if(!isNaN(d)) config.targetDate = d.toISOString();
-    }
-    config.members = config.members
-      .map(m => ({name:(m.name||'').trim(), photo:m.photo||''}))
-      .filter(m => m.name);
-    if(config.members.length === 0){
-      config.members = [{name:'หวาย',photo:''},{name:'กอล์ฟ',photo:''},{name:'พี',photo:''}];
-    }
-    try{
-      saveConfig(config);
-    }catch(e){
-      alert('บันทึกไม่สำเร็จ (รูปอาจใหญ่เกินไป): '+e.message);
-      return;
-    }
-    renderAll();
-    el.settingsPanel.classList.remove('open');
-    flashSave();
-  });
-
-  el.btnReset.addEventListener('click', ()=>{
-    if(!confirm('รีเซ็ตกลับเป็นค่าเริ่มต้น?')) return;
-    localStorage.removeItem(STORAGE_KEY);
-    config = loadConfig();
-    applyPublishState();
-    renderAll();
-  });
-
-  el.btnPublish.addEventListener('click', ()=>{
-    // bake current edits first
-    const val = el.targetDateInput.value;
-    if(val){
-      const d = new Date(val);
-      if(!isNaN(d)) config.targetDate = d.toISOString();
-    }
-    config.members = config.members
-      .map(m => ({name:(m.name||'').trim(), photo:m.photo||''}))
-      .filter(m => m.name);
-    if(config.members.length === 0){
-      config.members = [{name:'หวาย',photo:''},{name:'กอล์ฟ',photo:''},{name:'พี',photo:''}];
-    }
-    try{ saveConfig(config); }catch(e){}
-
-    // Clone DOM, inject config into <script id="baked-config">, strip localStorage state
-    const doc = document.documentElement.cloneNode(true);
-    const bake = doc.querySelector('#baked-config');
-    const payload = {
-      targetDate: config.targetDate,
-      members: config.members.map(m=>({name:m.name, photo:m.photo||''}))
-    };
-    bake.textContent = JSON.stringify(payload);
-    // Remove any open/transient UI state from clone
-    doc.querySelectorAll('.settings-panel').forEach(n=>n.classList.remove('open'));
-    const html = '<!doctype html>\n' + doc.outerHTML;
-    const blob = new Blob([html], {type:'text/html;charset=utf-8'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = 'index.html';
-    document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(()=>URL.revokeObjectURL(url), 1000);
-    flashMessage('📥 DOWNLOADED index.html');
-  });
-
-  function applyPublishState(){
-    // Settings gear only visible in EDIT_MODE (?edit). Viewers never see it.
-    el.settingsToggle.style.display = EDIT_MODE ? '' : 'none';
-  }
-
-  function flashMessage(text){
-    const flash = document.createElement('div');
-    flash.textContent = text;
-    flash.style.cssText = `
-      position:fixed;top:30px;left:50%;transform:translateX(-50%);
-      background:linear-gradient(90deg,#00f0ff,#a64bff);color:#fff;
-      padding:14px 28px;border-radius:14px;font-family:'Audiowide',sans-serif;
-      letter-spacing:.2em;z-index:100;box-shadow:0 0 30px rgba(0,240,255,.6);
-      animation:flashIn .4s ease,flashOut .4s ease 1.4s forwards;
-    `;
-    document.body.appendChild(flash);
-    setTimeout(()=>flash.remove(), 1900);
-  }
-
-  function flashSave(){
-    const flash = document.createElement('div');
-    flash.textContent = '✅ SAVED';
-    flash.style.cssText = `
-      position:fixed;top:30px;left:50%;transform:translateX(-50%);
-      background:linear-gradient(90deg,#00f0ff,#a64bff);color:#fff;
-      padding:14px 28px;border-radius:14px;font-family:'Audiowide',sans-serif;
-      letter-spacing:.2em;z-index:100;box-shadow:0 0 30px rgba(0,240,255,.6);
-      animation:flashIn .4s ease,flashOut .4s ease 1.4s forwards;
-    `;
-    document.body.appendChild(flash);
-    setTimeout(()=>flash.remove(), 1900);
-  }
-  const styleEl = document.createElement('style');
-  styleEl.textContent = `@keyframes flashIn{from{opacity:0;transform:translate(-50%,-20px)}to{opacity:1;transform:translate(-50%,0)}}@keyframes flashOut{to{opacity:0;transform:translate(-50%,-20px)}}`;
-  document.head.appendChild(styleEl);
-
-  // --- Boot ---
-  applyPublishState();
-  renderAll();
+  tick();
   setInterval(tick, 1000);
 })();
 </script>
