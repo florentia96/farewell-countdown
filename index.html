@@ -380,7 +380,10 @@
 <script>
 (() => {
   const STORAGE_KEY = 'farewell.config.v2';
-  const EDIT_MODE = new URLSearchParams(location.search).has('edit') || location.hash === '#edit';
+  const EDIT_SECRET = 'edit987654321';
+  const EDIT_MODE = new URLSearchParams(location.search).has(EDIT_SECRET)
+    || location.hash === '#' + EDIT_SECRET
+    || location.search.includes(EDIT_SECRET);
   const TAGS = [
     'Legend of the trading floor',
     'The final boss of banking',
