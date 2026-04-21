@@ -119,10 +119,16 @@
     transition:transform .35s cubic-bezier(.4,2,.6,1);
   }
   .unit .num.flip{animation:flip .5s cubic-bezier(.4,2,.6,1)}
+  .unit .num.blink{animation:blink .7s ease-out}
   @keyframes flip{
     0%{transform:rotateX(0) scale(1)}
     50%{transform:rotateX(90deg) scale(1.15);color:var(--neon-yellow);text-shadow:0 0 20px var(--neon-yellow),0 0 40px var(--neon-pink)}
     100%{transform:rotateX(0) scale(1)}
+  }
+  @keyframes blink{
+    0%,100%{opacity:1;text-shadow:0 0 6px #fff,0 0 16px var(--neon-cyan),0 0 32px var(--neon-cyan),0 0 60px var(--neon-pink)}
+    25%{opacity:.35;text-shadow:0 0 4px var(--neon-pink),0 0 10px var(--neon-pink)}
+    55%{opacity:1;text-shadow:0 0 10px var(--neon-yellow),0 0 24px var(--neon-yellow),0 0 44px var(--neon-pink)}
   }
   .unit .label{
     margin-top:10px;
@@ -317,6 +323,7 @@
 </style>
 </head>
 <body>
+  <script id="baked-config" type="application/json">{}</script>
   <div class="bg-animation"></div>
   <div class="particles" id="particles"></div>
 
@@ -366,13 +373,14 @@
       <button class="btn-reset" id="btn-reset">↺ RESET</button>
     </div>
 
-    <button class="btn-publish" id="btn-publish">🚀 PUBLISH</button>
-    <p class="publish-hint">พอ Publish แล้ว ปุ่ม ⚙️ จะหายไป<br>กด <b>Shift + U</b> 3 ครั้งเพื่อปลดล็อกแก้ไขอีกครั้ง</p>
+    <button class="btn-publish" id="btn-publish">🚀 PUBLISH (Download index.html)</button>
+    <p class="publish-hint">กด Publish แล้วจะได้ไฟล์ <b>index.html</b> ฝังข้อมูลปัจจุบัน<br>เอาไฟล์นี้ไปแทนที่ใน GitHub repo เพื่อเผยแพร่ให้คนอื่นดู</p>
   </aside>
 
 <script>
 (() => {
   const STORAGE_KEY = 'farewell.config.v2';
+  const EDIT_MODE = new URLSearchParams(location.search).has('edit') || location.hash === '#edit';
   const TAGS = [
     'Legend of the trading floor',
     'The final boss of banking',
@@ -398,27 +406,28 @@
     };
   }
 
+  function loadBakedConfig(){
+    try{
+      const raw = document.getElementById('baked-config')?.textContent?.trim();
+      if(!raw || raw === '{}') return null;
+      const p = JSON.parse(raw);
+      if(!p.targetDate || !Array.isArray(p.members)) return null;
+      return p;
+    }catch(e){ return null; }
+  }
+
   function loadConfig(){
+    const baked = loadBakedConfig();
+    // Viewers always see the baked config; localStorage only in edit mode
+    if(!EDIT_MODE) return baked || defaultConfig();
     try{
       const raw = localStorage.getItem(STORAGE_KEY);
-      if(!raw){
-        // migrate from v1
-        const old = localStorage.getItem('farewell.config.v1');
-        if(old){
-          const p = JSON.parse(old);
-          if(p && Array.isArray(p.names)){
-            return {
-              targetDate: p.targetDate,
-              members: p.names.map(n=>({name:n,photo:''}))
-            };
-          }
-        }
-        return defaultConfig();
+      if(raw){
+        const parsed = JSON.parse(raw);
+        if(parsed.targetDate && Array.isArray(parsed.members)) return parsed;
       }
-      const parsed = JSON.parse(raw);
-      if(!parsed.targetDate || !Array.isArray(parsed.members)) return defaultConfig();
-      return parsed;
-    }catch(e){ return defaultConfig(); }
+    }catch(e){}
+    return baked || defaultConfig();
   }
 
   function saveConfig(cfg){
@@ -606,10 +615,19 @@
     const minutes = Math.floor((diff%3600000)/60000);
     const seconds = Math.floor((diff%60000)/1000);
 
+    const secChanged = pad(seconds) !== prev.s;
     setNum(el.days, days, 'd');
     setNum(el.hours, hours, 'h');
     setNum(el.minutes, minutes, 'm');
     setNum(el.seconds, seconds, 's');
+    if(secChanged){
+      [el.days, el.hours, el.minutes].forEach(n=>{
+        if(!n) return;
+        n.classList.remove('blink');
+        void n.offsetWidth;
+        n.classList.add('blink');
+      });
+    }
     el.farewellDays.textContent = days;
   }
 
@@ -677,7 +695,6 @@
   });
 
   el.btnPublish.addEventListener('click', ()=>{
-    if(!confirm('Publish เลยมั้ย? ปุ่ม ⚙️ จะหายไป และข้อมูลจะถูกล็อก (กด Shift+U 3 ครั้งเพื่อปลดล็อก)')) return;
     // bake current edits first
     const val = el.targetDateInput.value;
     if(val){
@@ -690,48 +707,32 @@
     if(config.members.length === 0){
       config.members = [{name:'หวาย',photo:''},{name:'กอล์ฟ',photo:''},{name:'พี',photo:''}];
     }
-    config.published = true;
-    try{ saveConfig(config); }
-    catch(e){ alert('บันทึกไม่สำเร็จ: '+e.message); return; }
-    el.settingsPanel.classList.remove('open');
-    applyPublishState();
-    renderAll();
+    try{ saveConfig(config); }catch(e){}
+
+    // Clone DOM, inject config into <script id="baked-config">, strip localStorage state
+    const doc = document.documentElement.cloneNode(true);
+    const bake = doc.querySelector('#baked-config');
+    const payload = {
+      targetDate: config.targetDate,
+      members: config.members.map(m=>({name:m.name, photo:m.photo||''}))
+    };
+    bake.textContent = JSON.stringify(payload);
+    // Remove any open/transient UI state from clone
+    doc.querySelectorAll('.settings-panel').forEach(n=>n.classList.remove('open'));
+    const html = '<!doctype html>\n' + doc.outerHTML;
+    const blob = new Blob([html], {type:'text/html;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'index.html';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url), 1000);
+    flashMessage('📥 DOWNLOADED index.html');
   });
 
   function applyPublishState(){
-    const locked = !!config.published;
-    el.settingsToggle.style.display = locked ? 'none' : '';
-    let badge = document.getElementById('published-badge');
-    if(locked){
-      if(!badge){
-        badge = document.createElement('div');
-        badge.id = 'published-badge';
-        badge.className = 'published-badge';
-        badge.textContent = '● PUBLISHED';
-        document.body.appendChild(badge);
-      }
-    }else if(badge){
-      badge.remove();
-    }
+    // Settings gear only visible in EDIT_MODE (?edit). Viewers never see it.
+    el.settingsToggle.style.display = EDIT_MODE ? '' : 'none';
   }
-
-  // Secret unlock: press Shift+U three times within 2s
-  let unlockHits = [];
-  document.addEventListener('keydown', e=>{
-    if(e.shiftKey && (e.key === 'U' || e.key === 'u')){
-      const now = Date.now();
-      unlockHits = unlockHits.filter(t => now - t < 2000);
-      unlockHits.push(now);
-      if(unlockHits.length >= 3 && config.published){
-        config.published = false;
-        saveConfig(config);
-        applyPublishState();
-        el.settingsPanel.classList.add('open');
-        unlockHits = [];
-        flashMessage('🔓 UNLOCKED');
-      }
-    }
-  });
 
   function flashMessage(text){
     const flash = document.createElement('div');
