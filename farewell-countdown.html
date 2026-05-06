@@ -1,0 +1,1673 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>🔥 MISSION: BANK FINALE 🔥</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Orbitron:wght@600;900&family=Prompt:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --neon-pink:#ff2a9d;
+    --neon-cyan:#00f0ff;
+    --neon-purple:#a64bff;
+    --neon-yellow:#ffe600;
+    --bg-0:#0a0520;
+    --bg-1:#1a0a3a;
+  }
+  html,body{min-height:100vh;overflow-x:hidden}
+  body{
+    font-family:'Prompt',system-ui,sans-serif;
+    color:#fff;
+    background:var(--bg-0);
+    position:relative;
+    padding:40px 20px 80px;
+  }
+  /* Animated gradient background */
+  .bg-animation{
+    position:fixed;inset:0;z-index:-2;
+    background:linear-gradient(125deg,#0a0520,#2a0a4a,#4a0a6a,#0a2a5a,#0a0520);
+    background-size:400% 400%;
+    animation:gradient-shift 18s ease infinite;
+  }
+  @keyframes gradient-shift{
+    0%,100%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+  }
+  /* Floating particles */
+  .particles{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+  .particles span{
+    position:absolute;display:block;width:6px;height:6px;border-radius:50%;
+    background:var(--neon-cyan);
+    box-shadow:0 0 10px var(--neon-cyan),0 0 20px var(--neon-cyan);
+    bottom:-20px;opacity:.7;
+    animation:float linear infinite;
+  }
+  .particles span:nth-child(odd){background:var(--neon-pink);box-shadow:0 0 10px var(--neon-pink),0 0 20px var(--neon-pink)}
+  .particles span:nth-child(3n){background:var(--neon-purple);box-shadow:0 0 10px var(--neon-purple),0 0 20px var(--neon-purple)}
+  .particles span:nth-child(5n){background:var(--neon-yellow);box-shadow:0 0 10px var(--neon-yellow),0 0 20px var(--neon-yellow)}
+  @keyframes float{
+    0%{transform:translateY(0) translateX(0) scale(1);opacity:0}
+    10%{opacity:.8}
+    90%{opacity:.8}
+    100%{transform:translateY(-110vh) translateX(40px) scale(.5);opacity:0}
+  }
+
+  /* Title */
+  .title{text-align:center;margin-bottom:40px}
+  .title h1{
+    font-family:'Audiowide',sans-serif;
+    font-size:clamp(1.8rem,5vw,3.6rem);
+    letter-spacing:.08em;
+    background:linear-gradient(90deg,var(--neon-pink),var(--neon-yellow),var(--neon-cyan),var(--neon-purple),var(--neon-pink));
+    background-size:300% 100%;
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:gradient-shift 4s linear infinite,pulse-title 2s ease-in-out infinite;
+    filter:drop-shadow(0 0 12px rgba(255,42,157,.6));
+  }
+  @keyframes pulse-title{
+    0%,100%{transform:scale(1)}
+    50%{transform:scale(1.03)}
+  }
+  .title p{
+    margin-top:12px;
+    font-size:clamp(.95rem,1.8vw,1.15rem);
+    color:#c7b6ff;
+    letter-spacing:.05em;
+  }
+  .title .names-inline{color:var(--neon-yellow);font-weight:900;text-shadow:0 0 8px var(--neon-yellow)}
+
+  /* Per-card countdown — compact 4-cell row for ball-shaped card */
+  .card-countdown{
+    display:flex;flex-wrap:nowrap;gap:3px;margin-top:6px;justify-content:center;
+  }
+  .card-unit{
+    background:rgba(20,5,50,.7);
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+    border:1px solid rgba(255,42,157,.35);
+    border-radius:6px;
+    padding:3px 4px;
+    text-align:center;
+    perspective:300px;
+    box-shadow:0 0 6px rgba(166,75,255,.28);
+    min-width:30px;
+  }
+  .card-unit .cnum{
+    font-family:'Orbitron',sans-serif;font-weight:900;
+    font-size:.78rem;line-height:1;
+    color:#fff;
+    text-shadow:0 0 4px #fff,0 0 8px var(--neon-cyan),0 0 14px var(--neon-pink);
+    display:inline-block;
+  }
+  .card-unit .cnum.flip{animation:flip .5s cubic-bezier(.4,2,.6,1)}
+  .card-unit .cnum.blink{animation:blink .7s ease-out}
+  @keyframes flip{
+    0%{transform:rotateX(0)}
+    50%{transform:rotateX(90deg);color:var(--neon-yellow);text-shadow:0 0 16px var(--neon-yellow),0 0 32px var(--neon-pink)}
+    100%{transform:rotateX(0)}
+  }
+  @keyframes blink{
+    0%,100%{opacity:1;text-shadow:0 0 4px #fff,0 0 8px var(--neon-cyan),0 0 14px var(--neon-pink)}
+    25%{opacity:.35;text-shadow:0 0 4px var(--neon-pink),0 0 8px var(--neon-pink)}
+    55%{opacity:1;text-shadow:0 0 8px var(--neon-yellow),0 0 18px var(--neon-yellow),0 0 30px var(--neon-pink)}
+  }
+  .card-unit .clabel{
+    font-family:'Audiowide',sans-serif;
+    font-size:.34rem;
+    letter-spacing:.1em;
+    color:var(--neon-cyan);
+    text-shadow:0 0 3px var(--neon-cyan);
+    margin-top:1px;
+  }
+
+  /* Names ARENA — physics playground for floating disco-ball cards.
+     overflow:hidden CONTAINS the laser beams inside the arena — without
+     this, beams leak out and trigger horizontal/vertical scrollbar
+     toggling which causes the viewport to jitter on every reflow. */
+  .names{
+    position:relative;
+    width:100%;
+    max-width:1280px;
+    height:min(72vh, 720px);
+    min-height:480px;
+    margin:30px auto 50px;
+    overflow:hidden;
+    border-radius:24px;
+    contain:layout paint;
+  }
+
+  /* Disco-ball card (circle, position:absolute — JS sets transform every frame).
+     NO backdrop-filter — too costly with 6 balls moving over an animated
+     gradient bg (was the main jitter source). The radial-gradient bg is
+     already 85-96% opaque so blur was barely visible anyway. */
+  .card{
+    position:absolute;
+    top:0;left:0;
+    width:220px;height:220px;
+    border-radius:50%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:14px 16px;
+    text-align:center;
+    background:radial-gradient(circle at 30% 28%, rgba(255,255,255,.16), rgba(20,5,50,.92) 55%, rgba(8,3,28,.98));
+    border:2px solid rgba(0,240,255,.55);
+    box-shadow:
+      0 0 24px rgba(0,240,255,.32),
+      0 0 50px rgba(255,42,157,.22),
+      inset 0 0 26px rgba(166,75,255,.22),
+      inset 0 -10px 30px rgba(0,0,0,.4);
+    cursor:default;
+    will-change:transform;
+    transform:translate3d(0,0,0);
+    backface-visibility:hidden;
+    transition:box-shadow .35s, border-color .35s, filter .6s;
+    overflow:visible;
+    isolation:isolate;
+  }
+  .card:hover{
+    border-color:var(--neon-pink);
+    box-shadow:
+      0 0 36px rgba(255,42,157,.55),
+      0 0 80px rgba(166,75,255,.4),
+      inset 0 0 30px rgba(255,42,157,.3),
+      inset 0 -10px 30px rgba(0,0,0,.45);
+    z-index:5;
+  }
+  .card.completed{
+    filter:brightness(0.6) saturate(0.7);
+    border-color:rgba(0,255,136,.45)!important;
+    box-shadow:0 0 20px rgba(0,255,136,.18),inset 0 0 28px rgba(0,255,136,.06)!important;
+    /* Clip the diagonal ribbon to the ball's circle (border-radius:50%) */
+    overflow:hidden;
+  }
+  .card.completed:hover{
+    box-shadow:0 0 24px rgba(0,255,136,.22),inset 0 0 28px rgba(0,255,136,.06)!important;
+  }
+  /* Diagonal sash that spans the FULL diameter of the ball */
+  .card.completed::after{
+    content:'✓ MISSION COMPLETE';
+    position:absolute;
+    left:-40%;right:-40%;
+    top:50%;
+    transform:translateY(-50%) rotate(-22deg);
+    padding:8px 0;
+    background:rgba(0,6,3,.88);
+    border-top:2px solid #00ff88;
+    border-bottom:2px solid #00ff88;
+    font-family:'Audiowide',sans-serif;
+    font-size:.62rem;
+    letter-spacing:.14em;
+    color:#00ff88;
+    text-align:center;
+    text-shadow:0 0 6px #00ff88,0 0 14px rgba(0,255,136,.7),0 0 28px rgba(0,255,136,.4);
+    box-shadow:0 0 18px rgba(0,255,136,.25),inset 0 0 12px rgba(0,255,136,.15);
+    pointer-events:none;
+    z-index:4;
+    white-space:nowrap;
+    animation:ribbon-glow 2.5s ease-in-out infinite;
+  }
+  @keyframes ribbon-glow{
+    0%,100%{text-shadow:0 0 6px #00ff88,0 0 14px rgba(0,255,136,.7),0 0 28px rgba(0,255,136,.4)}
+    50%    {text-shadow:0 0 12px #00ff88,0 0 28px #00ff88,0 0 50px rgba(0,255,136,.7)}
+  }
+  .card .avatar{
+    width:78px;height:78px;border-radius:50%;
+    margin:0 auto 5px;display:block;
+    object-fit:cover;
+    border:2px solid var(--neon-cyan);
+    box-shadow:0 0 14px var(--neon-cyan),0 0 24px rgba(0,240,255,.35),inset 0 0 14px rgba(255,42,157,.25);
+    background:linear-gradient(135deg,rgba(255,42,157,.25),rgba(0,240,255,.25));
+    flex-shrink:0;
+    transition:border-color .35s, box-shadow .35s;
+  }
+  .card:hover .avatar{
+    border-color:var(--neon-pink);
+    box-shadow:0 0 22px var(--neon-pink),0 0 40px rgba(255,42,157,.45);
+  }
+  .card .avatar.placeholder{
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Audiowide',sans-serif;font-size:1.9rem;
+    color:#fff;text-shadow:0 0 8px var(--neon-pink);
+  }
+
+  /* ====== Disco-ball laser beams ======
+     Each ball spawns 4-7 real <span class="beam"> children with random
+     angle / color / length / flicker delay+duration so every ball fires
+     a unique, asymmetric, pulsing spotlight pattern.
+     STACKING: lasers-layer paints first, balls-layer paints on top — so a
+     ball's body always covers any beam that crosses it from another ball. */
+  .lasers-layer,.balls-layer{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+  }
+  .balls-layer{pointer-events:auto}
+  .laser-portal{
+    position:absolute;
+    top:0;left:0;
+    width:0;height:0;
+    pointer-events:none;
+    will-change:transform;
+    backface-visibility:hidden;
+  }
+  .laser-beams{
+    position:absolute;
+    top:0;left:0;          /* portal origin = ball center (set via JS transform) */
+    width:0;height:0;
+    pointer-events:none;
+    animation:beams-spin var(--spin-dur,6s) linear infinite;
+    animation-direction:var(--spin-dir,normal);
+  }
+  .beam{
+    --angle:0deg;
+    --color:#ff2a9d;
+    --len:280px;
+    --inner:110px;     /* gap from origin (ball center) to ball edge */
+    --flick:1.4s;
+    --delay:0s;
+    position:absolute;
+    top:-3px;left:0;
+    height:6px;
+    width:var(--len);
+    transform-origin:0 3px;
+    /* Light starts AT the ball edge (--inner) and shoots outward */
+    background:linear-gradient(90deg,
+      rgba(0,0,0,0) 0,
+      rgba(0,0,0,0) calc(var(--inner) - 2px),
+      rgba(255,255,255,.95) calc(var(--inner) + 4px),
+      var(--color) calc(var(--inner) + 24px),
+      var(--color) calc(var(--inner) + 90px),
+      rgba(0,0,0,0) 100%
+    );
+    filter:blur(1.6px)
+           drop-shadow(0 0 8px var(--color))
+           drop-shadow(0 0 18px var(--color));
+    mix-blend-mode:screen;
+    opacity:.9;
+    transform:rotate(var(--angle));
+    animation:beam-flicker var(--flick) ease-in-out infinite alternate;
+    animation-delay:var(--delay);
+  }
+  /* portal is hidden by JS when its card becomes .completed */
+  @keyframes beams-spin{
+    to{transform:rotate(360deg)}
+  }
+  /* flicker: opacity pulse + gentle scaleX (range tight so beam stays
+     pinned to ball edge, doesn't shrink back into the ball interior) */
+  @keyframes beam-flicker{
+    0%,100%{opacity:.22;transform:rotate(var(--angle)) scaleX(.92)}
+    22%    {opacity:1;  transform:rotate(var(--angle)) scaleX(1.08)}
+    48%    {opacity:.5; transform:rotate(var(--angle)) scaleX(.96)}
+    70%    {opacity:.95;transform:rotate(var(--angle)) scaleX(1.04)}
+    85%    {opacity:.4; transform:rotate(var(--angle)) scaleX(.98)}
+  }
+
+  /* Respect users who disable motion */
+  @media (prefers-reduced-motion:reduce){
+    .laser-beams,
+    .beam,
+    .card.completed::after{animation:none!important}
+    .beam{opacity:.5!important;transform:rotate(var(--angle))!important}
+  }
+  /* (music plays automatically — no toggle button) */
+
+  /* Settings: avatar uploader */
+  .name-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:10px;padding:8px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.08);transition:border-color .15s,opacity .15s}
+  .name-row.drag-over{border-color:var(--neon-cyan);background:rgba(0,240,255,.07);box-shadow:0 0 8px rgba(0,240,255,.25)}
+  .name-row.dragging{opacity:.3;background:rgba(255,42,157,.08)}
+  .drag-handle{cursor:grab;color:rgba(255,255,255,.35);font-size:1.1rem;padding:0 3px 0 0;user-select:none;flex-shrink:0;line-height:1;transition:color .15s}
+  .drag-handle:hover{color:var(--neon-cyan)}
+  .drag-handle:active{cursor:grabbing}
+  .btn-sort-auto{background:rgba(0,240,255,.1);border:1px solid rgba(0,240,255,.4);color:var(--neon-cyan);border-radius:8px;padding:4px 10px;font-size:.78rem;cursor:pointer;font-family:'Audiowide',sans-serif;letter-spacing:.05em;transition:background .2s}
+  .btn-sort-auto:hover{background:rgba(0,240,255,.25)}
+  .name-row .thumb{
+    width:44px;height:44px;border-radius:50%;flex-shrink:0;
+    object-fit:cover;border:2px solid var(--neon-cyan);cursor:pointer;
+    background:linear-gradient(135deg,rgba(255,42,157,.3),rgba(0,240,255,.3));
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.2rem;color:#fff;
+  }
+  .name-row .thumb:hover{border-color:var(--neon-pink)}
+  .name-row input[type="text"]{flex:1}
+  .name-row button{background:rgba(255,42,157,.2);border:1px solid var(--neon-pink);color:#fff;border-radius:8px;padding:0 12px;cursor:pointer}
+  .name-row button:hover{background:rgba(255,42,157,.4)}
+  .card .name{
+    font-family:'Audiowide',sans-serif;
+    font-size:1rem;
+    background:linear-gradient(90deg,var(--neon-pink),var(--neon-cyan));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    letter-spacing:.04em;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    max-width:170px;
+  }
+  .card .tag{margin-top:1px;font-size:.62rem;color:#c7b6ff;font-style:italic;letter-spacing:.05em}
+
+  /* Farewell */
+  .farewell{
+    max-width:820px;margin:0 auto;
+    background:rgba(10,5,30,.6);
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border:1.5px solid rgba(166,75,255,.45);
+    border-radius:24px;
+    padding:32px 28px;
+    box-shadow:0 0 40px rgba(166,75,255,.3);
+    line-height:1.85;
+    font-size:clamp(1rem,1.6vw,1.15rem);
+  }
+  .farewell strong{
+    background:linear-gradient(90deg,var(--neon-yellow),var(--neon-pink));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    font-weight:900;
+  }
+  .farewell p+p{margin-top:14px}
+  .farewell .sig{margin-top:22px;text-align:right;color:var(--neon-cyan);font-family:'Audiowide',sans-serif;letter-spacing:.1em}
+
+  /* Mission complete */
+  .complete{
+    text-align:center;padding:40px;
+    font-family:'Audiowide',sans-serif;
+    font-size:clamp(1.4rem,3vw,2.4rem);
+    background:linear-gradient(90deg,var(--neon-yellow),var(--neon-pink),var(--neon-cyan));
+    background-size:200% 100%;
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:gradient-shift 3s linear infinite;
+  }
+
+  /* Settings */
+  .settings-toggle{
+    position:fixed;top:20px;right:20px;z-index:10;
+    width:54px;height:54px;border-radius:50%;
+    border:1.5px solid var(--neon-cyan);
+    background:rgba(10,5,30,.7);backdrop-filter:blur(10px);
+    color:var(--neon-cyan);font-size:1.6rem;cursor:pointer;
+    box-shadow:0 0 20px rgba(0,240,255,.5);
+    transition:transform .3s;
+  }
+  .settings-toggle:hover{transform:rotate(90deg) scale(1.1)}
+
+  .settings-panel{
+    position:fixed;top:0;right:0;bottom:0;z-index:20;
+    width:min(420px,100%);
+    background:rgba(8,3,25,.96);
+    backdrop-filter:blur(20px);
+    border-left:1.5px solid rgba(255,42,157,.5);
+    padding:70px 24px 24px;
+    overflow-y:auto;
+    transform:translateX(100%);
+    transition:transform .4s cubic-bezier(.4,0,.2,1);
+    box-shadow:-20px 0 60px rgba(0,0,0,.6);
+  }
+  .settings-panel.open{transform:translateX(0)}
+  .settings-panel h2{
+    font-family:'Audiowide',sans-serif;
+    color:var(--neon-pink);
+    margin-bottom:20px;letter-spacing:.1em;
+    text-shadow:0 0 10px var(--neon-pink);
+  }
+  .settings-panel label{display:block;margin-bottom:8px;color:var(--neon-cyan);font-size:.85rem;letter-spacing:.1em;text-transform:uppercase}
+  .settings-panel input[type="datetime-local"],
+  .settings-panel input[type="text"]{
+    width:100%;padding:10px 12px;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(0,240,255,.4);
+    border-radius:10px;color:#fff;font-family:inherit;font-size:1rem;
+    outline:none;transition:border-color .3s,box-shadow .3s;
+  }
+  .settings-panel input:focus{
+    border-color:var(--neon-pink);
+    box-shadow:0 0 12px rgba(255,42,157,.5);
+  }
+  .settings-panel .row{display:flex;gap:8px;margin-bottom:8px}
+  .settings-panel .row button{
+    background:rgba(255,42,157,.2);border:1px solid var(--neon-pink);color:#fff;
+    border-radius:8px;padding:0 12px;cursor:pointer;transition:background .2s;
+  }
+  .settings-panel .row button:hover{background:rgba(255,42,157,.4)}
+  .settings-panel .section{margin-bottom:24px}
+  .settings-panel .actions{display:flex;gap:10px;margin-top:18px}
+  .settings-panel .actions button{
+    flex:1;padding:12px;border-radius:10px;border:none;cursor:pointer;
+    font-family:'Audiowide',sans-serif;letter-spacing:.1em;font-size:.9rem;
+    transition:transform .2s,box-shadow .2s;
+  }
+  .btn-save{background:linear-gradient(90deg,var(--neon-cyan),var(--neon-purple));color:#fff;box-shadow:0 0 14px rgba(0,240,255,.5)}
+  .btn-reset{background:transparent;color:var(--neon-pink);border:1px solid var(--neon-pink)!important}
+  .btn-publish{
+    width:100%;margin-top:14px;padding:14px;border-radius:12px;border:none;cursor:pointer;
+    font-family:'Audiowide',sans-serif;letter-spacing:.2em;font-size:1rem;
+    background:linear-gradient(90deg,var(--neon-pink),var(--neon-yellow));color:#0a0520;font-weight:900;
+    box-shadow:0 0 20px rgba(255,230,0,.5),0 0 40px rgba(255,42,157,.4);
+    transition:transform .2s,box-shadow .2s;
+  }
+  .btn-publish:hover{transform:translateY(-2px);box-shadow:0 0 30px rgba(255,230,0,.7),0 0 60px rgba(255,42,157,.6)}
+  .publish-hint{margin-top:10px;font-size:.78rem;color:#c7b6ff;text-align:center;opacity:.75;line-height:1.5}
+  .published-badge{
+    position:fixed;bottom:16px;left:50%;transform:translateX(-50%);
+    padding:8px 18px;border-radius:20px;z-index:5;
+    background:rgba(10,5,30,.6);backdrop-filter:blur(10px);
+    border:1px solid rgba(0,240,255,.4);
+    font-family:'Audiowide',sans-serif;font-size:.72rem;letter-spacing:.25em;
+    color:var(--neon-cyan);text-shadow:0 0 8px var(--neon-cyan);
+    opacity:.7;
+  }
+  .settings-panel .actions button:hover{transform:translateY(-2px);box-shadow:0 0 20px rgba(255,42,157,.5)}
+  .settings-panel .close{
+    position:absolute;top:16px;right:16px;background:transparent;border:none;
+    color:#fff;font-size:1.8rem;cursor:pointer;opacity:.7;
+  }
+  .settings-panel .close:hover{opacity:1;color:var(--neon-pink)}
+
+  /* Responsive */
+  @media (max-width:640px){
+    .names{height:min(78vh, 680px);min-height:520px}
+    .card{width:185px;height:185px;padding:12px 14px}
+    .card .avatar{width:64px;height:64px;margin-bottom:4px}
+    .card .name{font-size:.86rem;max-width:140px}
+    .card .tag{font-size:.55rem}
+    .card-countdown{gap:2px;margin-top:4px}
+    .card-unit{padding:2px 3px;min-width:24px}
+    .card-unit .cnum{font-size:.66rem}
+    .card-unit .clabel{font-size:.3rem}
+    .laser-beams{width:380px;height:380px}
+  }
+</style>
+</head>
+<body>
+  <script id="baked-config" type="application/json">{}</script>
+  <div class="bg-animation"></div>
+  <div class="particles" id="particles"></div>
+
+  <header class="title">
+    <h1>🔥 MISSION: BANK FINALE 🔥</h1>
+    <p>T-minus countdown ก่อน <span class="names-inline" id="names-inline">หวาย × กอล์ฟ × พี</span> จะ log out จากตึกธนาคารอย่างเป็นทางการ 🏦⚡</p>
+  </header>
+
+  <section class="names" id="names-grid"></section>
+
+  <section class="farewell" id="farewell">
+    <p>📢 พวกเรา <strong id="farewell-names">หวาย • กอล์ฟ • พี</strong> จะเก็บของ ถอด ID card แล้ว log out จากฝั่งธนาคารอย่างเป็นทางการ 🎤⬇️</p>
+    <p>ขอบคุณพี่ๆทุกคนจากใจจริง ที่เปิดประตู ให้โอกาส คอย carry และสอนพวกผมมาตลอดเส้นทางนี้ 🙏✨ ทุก lesson ทุก moment จะขอเก็บไว้ในเซฟ level สูงสุดของ memory bank 💾💎</p>
+    <p>ถ้าช่วงที่ผ่านมาผมเผลอไปเหยียบตาปลาใคร พูดแรง ทำพลาด หรือปั่นจนพี่ปวดหัว — ต้องขออภัยจากใจนะครับ 🥹 แต่ถ้าอภัยไม่ไหวจริงๆ... ก็ <strong>ฮึบไว้นะครับพี่ 💪😂🔥</strong></p>
+    <p class="sig">— ด้วยรักและความนับถือ 💜</p>
+  </section>
+
+  <button class="settings-toggle" id="settings-toggle" title="Settings">⚙️</button>
+
+  <aside class="settings-panel" id="settings-panel">
+    <button class="close" id="settings-close">×</button>
+    <h2>⚡ Control Panel</h2>
+
+    <div class="section">
+      <label for="target-date">Effective Date</label>
+      <input type="datetime-local" id="target-date">
+    </div>
+
+    <div class="section">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <label style="margin:0">Team Members</label>
+        <button class="btn-sort-auto" id="btn-sort-auto" title="เรียงตามเวลาที่เหลือ (มากสุดก่อน)">⏱ Auto Sort</button>
+      </div>
+      <div id="name-list"></div>
+      <div class="row" style="margin-top:10px">
+        <input type="text" id="new-name" placeholder="เพิ่มชื่อ...">
+        <button id="add-name">+ เพิ่ม</button>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn-save" id="btn-save">💾 SAVE</button>
+      <button class="btn-reset" id="btn-reset">↺ RESET</button>
+    </div>
+
+    <button class="btn-publish" id="btn-publish">🚀 PUBLISH (Download index.html)</button>
+    <p class="publish-hint">กด Publish แล้วจะได้ไฟล์ <b>index.html</b> ฝังข้อมูลปัจจุบัน<br>เอาไฟล์นี้ไปแทนที่ใน GitHub repo เพื่อเผยแพร่ให้คนอื่นดู</p>
+  </aside>
+
+<script>
+(() => {
+  const STORAGE_KEY = 'farewell.config.v2';
+  const EDIT_SECRET = 'edit987654321';
+  const EDIT_MODE = location.protocol === 'file:'
+    || new URLSearchParams(location.search).has(EDIT_SECRET)
+    || location.hash === '#' + EDIT_SECRET
+    || location.search.includes(EDIT_SECRET);
+  const TAGS = [
+    'Legend of the trading floor',
+    'The final boss of banking',
+    'Log out in style',
+    'Vibes only, stress never',
+    'Main character energy',
+    'Retired from the matrix',
+    'Boss mode: activated',
+  ];
+
+  function defaultConfig(){
+    const d = new Date();
+    d.setDate(d.getDate()+10);
+    d.setHours(17,0,0,0);
+    const iso = d.toISOString();
+    return {
+      targetDate: iso,
+      published: false,
+      members: [
+        {name:'หวาย', photo:'', targetDate: iso},
+        {name:'กอล์ฟ', photo:'', targetDate: iso},
+        {name:'พี', photo:'', targetDate: iso},
+      ]
+    };
+  }
+
+  function loadBakedConfig(){
+    try{
+      const raw = document.getElementById('baked-config')?.textContent?.trim();
+      if(!raw || raw === '{}') return null;
+      const p = JSON.parse(raw);
+      if(!p.targetDate || !Array.isArray(p.members)) return null;
+      return p;
+    }catch(e){ return null; }
+  }
+
+  function loadConfig(){
+    const baked = loadBakedConfig();
+    // Viewers always see the baked config; localStorage only in edit mode
+    if(!EDIT_MODE) return baked || defaultConfig();
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(raw){
+        const parsed = JSON.parse(raw);
+        if(parsed.targetDate && Array.isArray(parsed.members)) return parsed;
+      }
+    }catch(e){}
+    return baked || defaultConfig();
+  }
+
+  function saveConfig(cfg){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(cfg));
+  }
+
+  let config = loadConfig();
+
+  // --- Particles ---
+  const particlesEl = document.getElementById('particles');
+  for(let i=0;i<40;i++){
+    const s = document.createElement('span');
+    const size = Math.random()*6+3;
+    s.style.width = s.style.height = size+'px';
+    s.style.left = (Math.random()*100)+'%';
+    s.style.animationDuration = (Math.random()*12+8)+'s';
+    s.style.animationDelay = (Math.random()*10)+'s';
+    particlesEl.appendChild(s);
+  }
+
+  // --- Elements ---
+  const el = {
+    namesInline: document.getElementById('names-inline'),
+    namesGrid: document.getElementById('names-grid'),
+    farewellDays: document.getElementById('farewell-days'),
+    farewellNames: document.getElementById('farewell-names'),
+    farewell: document.getElementById('farewell'),
+    targetDateInput: document.getElementById('target-date'),
+    nameList: document.getElementById('name-list'),
+    newName: document.getElementById('new-name'),
+    addName: document.getElementById('add-name'),
+    btnSave: document.getElementById('btn-save'),
+    btnReset: document.getElementById('btn-reset'),
+    btnPublish: document.getElementById('btn-publish'),
+    settingsToggle: document.getElementById('settings-toggle'),
+    settingsPanel: document.getElementById('settings-panel'),
+    settingsClose: document.getElementById('settings-close'),
+    btnSortAuto: document.getElementById('btn-sort-auto'),
+  };
+
+  function pad(n){ return String(Math.max(0,n)).padStart(2,'0'); }
+
+  function toLocalInput(iso){
+    const d = new Date(iso);
+    const pad2 = n => String(n).padStart(2,'0');
+    return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}T${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+  }
+
+  function renderNames(){
+    const members = config.members;
+    const names = members.map(m=>m.name);
+    el.namesInline.textContent = names.join(' × ') || '—';
+    el.farewellNames.textContent = names.join(' • ') || '—';
+
+    // stop any old per-member timers + physics RAF
+    (window._memberTimers||[]).forEach(t=>clearInterval(t));
+    window._memberTimers = [];
+    if(window._physicsRAF){cancelAnimationFrame(window._physicsRAF);window._physicsRAF=null;}
+    if(window._physicsResize){window.removeEventListener('resize',window._physicsResize);window._physicsResize=null;}
+
+    // build floating disco-balls — 2 stacked layers: lasers below, balls above
+    el.namesGrid.innerHTML = '';
+    const lasersLayer = document.createElement('div');
+    lasersLayer.className = 'lasers-layer';
+    const ballsLayer = document.createElement('div');
+    ballsLayer.className = 'balls-layer';
+    el.namesGrid.appendChild(lasersLayer);
+    el.namesGrid.appendChild(ballsLayer);
+
+    const NEON = ['#ff2a9d','#00f0ff','#ffe600','#a64bff','#00ff88','#ff7a1f'];
+    const balls = [];
+    members.forEach((m,i)=>{
+      const initial = (m.name || '?').trim().charAt(0).toUpperCase();
+      const avatar = m.photo
+        ? `<img class="avatar" src="${escapeAttr(m.photo)}" alt="${escapeAttr(m.name)}">`
+        : `<div class="avatar placeholder">${escapeHtml(initial)}</div>`;
+
+      // disco-ball laser: 4..7 unique <span class="beam"> spotlights per ball
+      // beams emerge AT THE BALL EDGE (--inner = ball radius) and shoot outward.
+      const isMobile = window.innerWidth < 640;
+      const inner = isMobile ? 92 : 110;
+      const beamCount = 4 + Math.floor(Math.random()*4);
+      const spinDur = (4 + Math.random()*5).toFixed(2);
+      const spinDir = Math.random() < .5 ? 'normal' : 'reverse';
+      let beamsHtml = '';
+      for(let k=0; k<beamCount; k++){
+        const ang = ((360 / beamCount) * k + (Math.random()-0.5) * 18).toFixed(1);
+        const color = NEON[Math.floor(Math.random()*NEON.length)];
+        const outer = (isMobile ? 160 + Math.random()*120 : 220 + Math.random()*160) | 0;
+        const len = inner + outer;
+        const flick = (0.85 + Math.random()*1.5).toFixed(2);
+        const delay = (Math.random()*1.8).toFixed(2);
+        beamsHtml += `<span class="beam" style="--angle:${ang}deg;--color:${color};--len:${len}px;--inner:${inner}px;--flick:${flick}s;--delay:${delay}s"></span>`;
+      }
+      const beamWrapStyle = `--spin-dur:${spinDur}s;--spin-dir:${spinDir}`;
+
+      // laser portal lives in lasers-layer (paints UNDER all balls)
+      const portal = document.createElement('div');
+      portal.className = 'laser-portal';
+      portal.innerHTML = `<div class="laser-beams" style="${beamWrapStyle}">${beamsHtml}</div>`;
+      lasersLayer.appendChild(portal);
+
+      // ball body lives in balls-layer (paints ON TOP of every laser)
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        ${avatar}
+        <div class="name">${escapeHtml(m.name)}</div>
+        <div class="tag">${escapeHtml(TAGS[i % TAGS.length])}</div>
+      `;
+      const cdEl = document.createElement('div');
+      cdEl.className = 'card-countdown';
+      cdEl.innerHTML =
+        '<div class="card-unit"><div class="cnum">00</div><div class="clabel">D</div></div>' +
+        '<div class="card-unit"><div class="cnum">00</div><div class="clabel">H</div></div>' +
+        '<div class="card-unit"><div class="cnum">00</div><div class="clabel">M</div></div>' +
+        '<div class="card-unit"><div class="cnum">00</div><div class="clabel">S</div></div>';
+      card.appendChild(cdEl);
+      ballsLayer.appendChild(card);
+
+      balls.push({el:card, portal, cdEl});
+
+      // start per-member ticker
+      const mTarget = new Date(m.targetDate || config.targetDate).getTime();
+      const cnums = cdEl.querySelectorAll('.cnum');
+      const mp = {d:null,h:null,m:null,s:null};
+      function setN(idx,v,k){
+        const str=pad(v);
+        if(mp[k]!==str){
+          cnums[idx].textContent=str;
+          cnums[idx].classList.remove('flip');void cnums[idx].offsetWidth;cnums[idx].classList.add('flip');
+          mp[k]=str;
+        }
+      }
+      function tickM(){
+        if(isNaN(mTarget)) return;
+        const diff=mTarget-Date.now();
+        if(diff<=0){
+          if(!card.classList.contains('completed')){
+            card.classList.add('completed');
+            cdEl.style.display='none';
+            if(portal) portal.style.display='none'; // kill laser when mission complete
+          }
+          return;
+        }
+        const d=Math.floor(diff/86400000),h=Math.floor((diff%86400000)/3600000),
+              mm=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);
+        const sc=pad(s)!==mp.s;
+        setN(0,d,'d');setN(1,h,'h');setN(2,mm,'m');setN(3,s,'s');
+        if(sc)[0,1,2].forEach(idx=>{
+          cnums[idx].classList.remove('blink');void cnums[idx].offsetWidth;cnums[idx].classList.add('blink');
+        });
+      }
+      tickM();
+      const tid=setInterval(tickM,1000);
+      window._memberTimers.push(tid);
+    });
+
+    // ===== Physics: balls bounce off arena walls + each other =====
+    const arena = el.namesGrid;
+    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+    if(balls.length && !reduceMotion){
+      // measure once after layout
+      requestAnimationFrame(()=>{
+        const W=()=>arena.clientWidth, H=()=>arena.clientHeight;
+        balls.forEach(b=>{
+          const rect=b.el.getBoundingClientRect();
+          b.r = Math.max(rect.width, rect.height) / 2;
+          b.x = b.r + Math.random()*Math.max(1,(W()-2*b.r));
+          b.y = b.r + Math.random()*Math.max(1,(H()-2*b.r));
+          const speed = 0.45 + Math.random()*0.55;        // 0.45..1.0 px/frame
+          const ang = Math.random()*Math.PI*2;
+          b.vx = Math.cos(ang)*speed;
+          b.vy = Math.sin(ang)*speed;
+        });
+        // separate initial overlaps
+        for(let iter=0; iter<80; iter++){
+          let moved=false;
+          for(let i=0;i<balls.length;i++){
+            for(let j=i+1;j<balls.length;j++){
+              const a=balls[i], b=balls[j];
+              const dx=b.x-a.x, dy=b.y-a.y;
+              const dist=Math.hypot(dx,dy)||0.0001;
+              const minD=a.r+b.r+2;
+              if(dist<minD){
+                const ov=(minD-dist)/2, nx=dx/dist, ny=dy/dist;
+                a.x-=nx*ov; a.y-=ny*ov;
+                b.x+=nx*ov; b.y+=ny*ov;
+                moved=true;
+              }
+            }
+          }
+          if(!moved) break;
+        }
+        function tick(){
+          const w=W(), h=H();
+          // integrate + wall bounce
+          for(const b of balls){
+            b.x += b.vx; b.y += b.vy;
+            if(b.x < b.r){b.x=b.r; b.vx=Math.abs(b.vx);}
+            else if(b.x > w-b.r){b.x=w-b.r; b.vx=-Math.abs(b.vx);}
+            if(b.y < b.r){b.y=b.r; b.vy=Math.abs(b.vy);}
+            else if(b.y > h-b.r){b.y=h-b.r; b.vy=-Math.abs(b.vy);}
+          }
+          // ball-ball elastic (equal mass)
+          for(let i=0;i<balls.length;i++){
+            for(let j=i+1;j<balls.length;j++){
+              const a=balls[i], b=balls[j];
+              const dx=b.x-a.x, dy=b.y-a.y;
+              const dist=Math.hypot(dx,dy)||0.0001;
+              const minD=a.r+b.r;
+              if(dist<minD){
+                const nx=dx/dist, ny=dy/dist;
+                const ov=(minD-dist)/2;
+                a.x-=nx*ov; a.y-=ny*ov;
+                b.x+=nx*ov; b.y+=ny*ov;
+                const va=a.vx*nx + a.vy*ny;
+                const vb=b.vx*nx + b.vy*ny;
+                if(va-vb>0){ // approaching
+                  const diff=vb-va;
+                  a.vx += diff*nx; a.vy += diff*ny;
+                  b.vx -= diff*nx; b.vy -= diff*ny;
+                }
+              }
+            }
+          }
+          for(const b of balls){
+            const tx=(b.x-b.r).toFixed(1), ty=(b.y-b.r).toFixed(1);
+            b.el.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
+            // portal sits at ball CENTER (beams radiate from origin = portal pos)
+            if(b.portal) b.portal.style.transform = `translate3d(${b.x.toFixed(1)}px, ${b.y.toFixed(1)}px, 0)`;
+          }
+          window._physicsRAF = requestAnimationFrame(tick);
+        }
+        window._physicsRAF = requestAnimationFrame(tick);
+      });
+      // clamp positions when arena resizes
+      window._physicsResize = ()=>{
+        const w=arena.clientWidth, h=arena.clientHeight;
+        for(const b of balls){
+          if(b.r){
+            b.x = Math.min(Math.max(b.r, b.x), Math.max(b.r, w-b.r));
+            b.y = Math.min(Math.max(b.r, b.y), Math.max(b.r, h-b.r));
+          }
+        }
+      };
+      window.addEventListener('resize', window._physicsResize);
+    }
+
+    // settings list
+    el.nameList.innerHTML = '';
+    members.forEach((m,i)=>{
+      const row = document.createElement('div');
+      row.className = 'name-row';
+      row.draggable = true;
+      const initial = (m.name || '?').trim().charAt(0).toUpperCase();
+      const thumb = m.photo
+        ? `<img class="thumb" src="${escapeAttr(m.photo)}" data-upload="${i}" title="คลิกเพื่อเปลี่ยนรูป">`
+        : `<div class="thumb" data-upload="${i}" title="คลิกเพื่ออัพโหลดรูป">${escapeHtml(initial)}</div>`;
+      const memberDateVal = m.targetDate ? toLocalInput(m.targetDate) : toLocalInput(config.targetDate);
+      row.innerHTML = `
+        <span class="drag-handle" title="ลากเพื่อเรียงลำดับ">⠿</span>
+        ${thumb}
+        <input type="text" value="${escapeAttr(m.name)}" data-idx="${i}" placeholder="ชื่อ" style="flex:1">
+        <button data-remove="${i}" title="ลบ">✕</button>
+        <input type="datetime-local" value="${memberDateVal}" data-date-idx="${i}" style="width:100%;font-size:.82rem" title="วันที่ลาออกของ ${escapeAttr(m.name)}">
+      `;
+      el.nameList.appendChild(row);
+    });
+
+    // Drag-to-reorder
+    let _dragIdx = null;
+    el.nameList.querySelectorAll('.name-row').forEach((row, i) => {
+      row.addEventListener('dragstart', e => {
+        _dragIdx = i;
+        row.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+      });
+      row.addEventListener('dragend', () => {
+        row.classList.remove('dragging');
+        el.nameList.querySelectorAll('.name-row').forEach(r => r.classList.remove('drag-over'));
+        _dragIdx = null;
+      });
+      row.addEventListener('dragover', e => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        el.nameList.querySelectorAll('.name-row').forEach(r => r.classList.remove('drag-over'));
+        if(_dragIdx !== null && _dragIdx !== i) row.classList.add('drag-over');
+      });
+      row.addEventListener('dragleave', () => {
+        row.classList.remove('drag-over');
+      });
+      row.addEventListener('drop', e => {
+        e.preventDefault();
+        row.classList.remove('drag-over');
+        if(_dragIdx === null || _dragIdx === i) return;
+        const moved = config.members.splice(_dragIdx, 1)[0];
+        config.members.splice(i, 0, moved);
+        renderNames();
+      });
+    });
+
+    el.nameList.querySelectorAll('input[type="text"]').forEach(inp=>{
+      inp.addEventListener('input', e=>{
+        config.members[+e.target.dataset.idx].name = e.target.value;
+      });
+    });
+    el.nameList.querySelectorAll('input[type="datetime-local"]').forEach(inp=>{
+      inp.addEventListener('change', e=>{
+        const idx = +e.target.dataset.dateIdx;
+        const d = new Date(e.target.value);
+        if(!isNaN(d)) config.members[idx].targetDate = d.toISOString();
+      });
+    });
+    el.nameList.querySelectorAll('button[data-remove]').forEach(btn=>{
+      btn.addEventListener('click', e=>{
+        config.members.splice(+e.currentTarget.dataset.remove,1);
+        renderNames();
+      });
+    });
+    el.nameList.querySelectorAll('[data-upload]').forEach(thumb=>{
+      thumb.addEventListener('click', ()=>pickPhoto(+thumb.dataset.upload));
+    });
+  }
+
+  function pickPhoto(idx){
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.addEventListener('change', ()=>{
+      const file = input.files && input.files[0];
+      if(!file) return;
+      resizeImage(file, 400).then(dataUrl=>{
+        config.members[idx].photo = dataUrl;
+        renderNames();
+      }).catch(err=>{
+        alert('อัพโหลดรูปไม่สำเร็จ: '+err.message);
+      });
+    });
+    input.click();
+  }
+
+  function resizeImage(file, maxSize){
+    return new Promise((resolve,reject)=>{
+      const reader = new FileReader();
+      reader.onerror = ()=>reject(new Error('อ่านไฟล์ไม่ได้'));
+      reader.onload = ()=>{
+        const img = new Image();
+        img.onerror = ()=>reject(new Error('รูปเสีย'));
+        img.onload = ()=>{
+          let {width,height} = img;
+          const scale = Math.min(1, maxSize/Math.max(width,height));
+          width = Math.round(width*scale);
+          height = Math.round(height*scale);
+          const canvas = document.createElement('canvas');
+          canvas.width = width; canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img,0,0,width,height);
+          resolve(canvas.toDataURL('image/jpeg',0.85));
+        };
+        img.src = reader.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  function escapeAttr(s){ return escapeHtml(s); }
+
+  function updateFarewellDays(){
+    if(!el.farewellDays) return;
+    const diff = new Date(config.targetDate).getTime() - Date.now();
+    el.farewellDays.textContent = Math.max(0, Math.floor(diff/86400000));
+  }
+
+  function renderAll(){
+    renderNames();
+    el.targetDateInput.value = toLocalInput(config.targetDate);
+    updateFarewellDays();
+  }
+
+  // --- Events ---
+  el.settingsToggle.addEventListener('click', ()=> el.settingsPanel.classList.toggle('open'));
+  el.settingsClose.addEventListener('click', ()=> el.settingsPanel.classList.remove('open'));
+
+  el.addName.addEventListener('click', ()=>{
+    const v = el.newName.value.trim();
+    if(!v) return;
+    config.members.push({name:v, photo:'', targetDate: config.targetDate});
+    el.newName.value = '';
+    renderNames();
+  });
+  el.newName.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); el.addName.click(); }});
+
+  el.btnSave.addEventListener('click', ()=>{
+    const val = el.targetDateInput.value;
+    if(val){
+      const d = new Date(val);
+      if(!isNaN(d)) config.targetDate = d.toISOString();
+    }
+    // read per-member dates from settings inputs
+    el.nameList.querySelectorAll('input[type="datetime-local"]').forEach(inp=>{
+      const idx = +inp.dataset.dateIdx;
+      if(idx >= 0 && idx < config.members.length){
+        const d = new Date(inp.value);
+        if(!isNaN(d)) config.members[idx].targetDate = d.toISOString();
+      }
+    });
+    config.members = config.members
+      .map(m => ({name:(m.name||'').trim(), photo:m.photo||'', targetDate: m.targetDate||config.targetDate}))
+      .filter(m => m.name);
+    if(config.members.length === 0){
+      config.members = [{name:'หวาย',photo:'',targetDate:config.targetDate},{name:'กอล์ฟ',photo:'',targetDate:config.targetDate},{name:'พี',photo:'',targetDate:config.targetDate}];
+    }
+    try{
+      saveConfig(config);
+    }catch(e){
+      alert('บันทึกไม่สำเร็จ (รูปอาจใหญ่เกินไป): '+e.message);
+      return;
+    }
+    renderAll();
+    el.settingsPanel.classList.remove('open');
+    flashSave();
+  });
+
+  el.btnSortAuto.addEventListener('click', ()=>{
+    config.members.sort((a, b) => {
+      const ta = new Date(a.targetDate || config.targetDate).getTime();
+      const tb = new Date(b.targetDate || config.targetDate).getTime();
+      return tb - ta; // most time remaining first; expired (past) last
+    });
+    renderNames();
+  });
+
+  el.btnReset.addEventListener('click', ()=>{
+    if(!confirm('รีเซ็ตกลับเป็นค่าเริ่มต้น?')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    config = loadConfig();
+    applyPublishState();
+    renderAll();
+  });
+
+  el.btnPublish.addEventListener('click', ()=>{
+    // bake current edits first — read global date
+    const val = el.targetDateInput.value;
+    if(val){ const d=new Date(val); if(!isNaN(d)) config.targetDate=d.toISOString(); }
+    // read per-member dates from UI inputs (same as btnSave)
+    el.nameList.querySelectorAll('input[type="datetime-local"]').forEach(inp=>{
+      const idx=+inp.dataset.dateIdx;
+      if(idx>=0 && idx<config.members.length){
+        const d=new Date(inp.value); if(!isNaN(d)) config.members[idx].targetDate=d.toISOString();
+      }
+    });
+    // read name text inputs too
+    el.nameList.querySelectorAll('input[type="text"]').forEach(inp=>{
+      const idx=+inp.dataset.idx;
+      if(idx>=0 && idx<config.members.length) config.members[idx].name=inp.value;
+    });
+    config.members = config.members
+      .map(m => ({name:(m.name||'').trim(), photo:m.photo||'', targetDate:m.targetDate||config.targetDate}))
+      .filter(m => m.name);
+    if(config.members.length === 0){
+      config.members = [{name:'หวาย',photo:'',targetDate:config.targetDate},{name:'กอล์ฟ',photo:'',targetDate:config.targetDate},{name:'พี',photo:'',targetDate:config.targetDate}];
+    }
+    try{ saveConfig(config); }catch(e){}
+
+    // Build a viewer-only HTML: strip admin UI + admin JS, inject slim viewer script.
+    const doc = document.documentElement.cloneNode(true);
+    const payload = {
+      targetDate: config.targetDate,
+      members: config.members.map(m=>({name:m.name, photo:m.photo||'', targetDate:m.targetDate||config.targetDate}))
+    };
+    // Inject baked config
+    const bake = doc.querySelector('#baked-config');
+    bake.textContent = JSON.stringify(payload);
+    // Strip admin-only DOM
+    doc.querySelectorAll('#settings-toggle, #settings-panel').forEach(n=>n.remove());
+    // Clear pre-rendered dynamic content so viewer script renders fresh (no duplicates)
+    const _ng = doc.querySelector('#names-grid'); if(_ng) _ng.innerHTML = '';
+    const _ni = doc.querySelector('#names-inline'); if(_ni) _ni.textContent = '';
+    const _fn = doc.querySelector('#farewell-names'); if(_fn) _fn.textContent = '';
+    const _fd = doc.querySelector('#farewell-days'); if(_fd) _fd.textContent = '';
+    // Strip ALL existing scripts (admin code is in there)
+    doc.querySelectorAll('script').forEach(s=>{
+      if(s.id !== 'baked-config') s.remove();
+    });
+    // Add slim viewer script
+    const viewerJs = buildViewerScript();
+    const body = doc.querySelector('body');
+    const script = document.createElement('script');
+    script.textContent = viewerJs;
+    body.appendChild(script);
+    const html = '<!doctype html>\n' + doc.outerHTML;
+    const blob = new Blob([html], {type:'text/html;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'index.html';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url), 1000);
+    flashMessage('📥 DOWNLOADED index.html (viewer-only)');
+  });
+
+  function applyPublishState(){
+    // Settings gear only visible in EDIT_MODE (?edit). Viewers never see it.
+    el.settingsToggle.style.display = EDIT_MODE ? '' : 'none';
+  }
+
+  function buildViewerScript(){
+    const TAGS_JSON = JSON.stringify(TAGS);
+    return `(() => {
+  const TAGS = ${TAGS_JSON};
+  const pad = n => String(Math.max(0,n)).padStart(2,'0');
+  function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+
+  let cfg = {};
+  try{ cfg = JSON.parse(document.getElementById('baked-config').textContent||'{}'); }catch(e){}
+  const members = (Array.isArray(cfg.members) ? cfg.members.slice() : [])
+    .sort((a,b)=>{
+      const ta=new Date(a.targetDate||cfg.targetDate).getTime();
+      const tb=new Date(b.targetDate||cfg.targetDate).getTime();
+      return tb-ta; // most time remaining first; expired last
+    });
+
+  // Particles
+  const particlesEl = document.getElementById('particles');
+  for(let i=0;i<40;i++){
+    const s=document.createElement('span');
+    const sz=Math.random()*6+3;
+    s.style.width=s.style.height=sz+'px';
+    s.style.left=(Math.random()*100)+'%';
+    s.style.animationDuration=(Math.random()*12+8)+'s';
+    s.style.animationDelay=(Math.random()*10)+'s';
+    particlesEl.appendChild(s);
+  }
+
+  // Name inline & farewell text
+  const namesInline=document.getElementById('names-inline');
+  const farewellNames=document.getElementById('farewell-names');
+  const farewellDays=document.getElementById('farewell-days');
+  const names=members.map(m=>m.name);
+  if(namesInline) namesInline.textContent=names.join(' × ')||'—';
+  if(farewellNames) farewellNames.textContent=names.join(' • ')||'—';
+  if(farewellDays){
+    const diff=new Date(cfg.targetDate).getTime()-Date.now();
+    farewellDays.textContent=Math.max(0,Math.floor(diff/86400000));
+  }
+
+  // Cards with per-member countdown — 2-layer disco-ball floating physics
+  const grid=document.getElementById('names-grid');
+  const lasersLayer=document.createElement('div');
+  lasersLayer.className='lasers-layer';
+  const ballsLayer=document.createElement('div');
+  ballsLayer.className='balls-layer';
+  grid.appendChild(lasersLayer);
+  grid.appendChild(ballsLayer);
+
+  const NEON=['#ff2a9d','#00f0ff','#ffe600','#a64bff','#00ff88','#ff7a1f'];
+  const balls=[];
+  members.forEach((m,i)=>{
+    const initial=(m.name||'?').trim().charAt(0).toUpperCase();
+    const avatar=m.photo
+      ?'<img class="avatar" src="'+m.photo+'" alt="">'
+      :'<div class="avatar placeholder">'+escapeHtml(initial)+'</div>';
+    // disco-ball laser: 4..7 <span class="beam"> spotlights per ball, unique randomization
+    const isMobile=window.innerWidth<640;
+    const inner=isMobile?92:110;
+    const beamCount=4+Math.floor(Math.random()*4);
+    const spinDur=(4+Math.random()*5).toFixed(2);
+    const spinDir=Math.random()<.5?'normal':'reverse';
+    let beamsHtml='';
+    for(let k=0;k<beamCount;k++){
+      const ang=((360/beamCount)*k+(Math.random()-0.5)*18).toFixed(1);
+      const color=NEON[Math.floor(Math.random()*NEON.length)];
+      const outer=(isMobile?160+Math.random()*120:220+Math.random()*160)|0;
+      const len=inner+outer;
+      const flick=(0.85+Math.random()*1.5).toFixed(2);
+      const delay=(Math.random()*1.8).toFixed(2);
+      beamsHtml+='<span class="beam" style="--angle:'+ang+'deg;--color:'+color+';--len:'+len+'px;--inner:'+inner+'px;--flick:'+flick+'s;--delay:'+delay+'s"></span>';
+    }
+    const beamWrapStyle='--spin-dur:'+spinDur+'s;--spin-dir:'+spinDir;
+
+    // laser portal — paints UNDER all balls so beams never cross another ball
+    const portal=document.createElement('div');
+    portal.className='laser-portal';
+    portal.innerHTML='<div class="laser-beams" style="'+beamWrapStyle+'">'+beamsHtml+'</div>';
+    lasersLayer.appendChild(portal);
+
+    // ball body — paints ON TOP of every laser
+    const card=document.createElement('div');
+    card.className='card';
+    card.innerHTML=avatar+'<div class="name">'+escapeHtml(m.name)+'</div><div class="tag">'+escapeHtml(TAGS[i%TAGS.length])+'</div>';
+    const cdEl=document.createElement('div');
+    cdEl.className='card-countdown';
+    cdEl.innerHTML=
+      '<div class="card-unit"><div class="cnum">00</div><div class="clabel">D</div></div>'+
+      '<div class="card-unit"><div class="cnum">00</div><div class="clabel">H</div></div>'+
+      '<div class="card-unit"><div class="cnum">00</div><div class="clabel">M</div></div>'+
+      '<div class="card-unit"><div class="cnum">00</div><div class="clabel">S</div></div>';
+    card.appendChild(cdEl);
+    ballsLayer.appendChild(card);
+    balls.push({el:card,portal});
+
+    const mTarget=new Date(m.targetDate||cfg.targetDate).getTime();
+    const cnums=cdEl.querySelectorAll('.cnum');
+    const mp={d:null,h:null,m:null,s:null};
+    const setN=(idx,v,k)=>{
+      const str=pad(v);
+      if(mp[k]!==str){cnums[idx].textContent=str;cnums[idx].classList.remove('flip');void cnums[idx].offsetWidth;cnums[idx].classList.add('flip');mp[k]=str;}
+    };
+    const tickM=()=>{
+      if(isNaN(mTarget)) return;
+      const diff=mTarget-Date.now();
+      if(diff<=0){
+        if(!card.classList.contains('completed')){
+          card.classList.add('completed');
+          cdEl.style.display='none';
+          if(portal) portal.style.display='none';
+        }
+        return;
+      }
+      const d=Math.floor(diff/86400000),h=Math.floor((diff%86400000)/3600000),
+            mm=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);
+      const sc=pad(s)!==mp.s;
+      setN(0,d,'d');setN(1,h,'h');setN(2,mm,'m');setN(3,s,'s');
+      if(sc)[0,1,2].forEach(idx=>{cnums[idx].classList.remove('blink');void cnums[idx].offsetWidth;cnums[idx].classList.add('blink');});
+    };
+    tickM();
+    setInterval(tickM,1000);
+  });
+
+  // ===== Physics simulator: arena bounce + ball-ball elastic collision =====
+  (function physics(){
+    if(!balls.length) return;
+    const reduce=window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+    if(reduce){
+      // Static fallback: tile-grid layout inside arena
+      const cols=Math.max(1,Math.floor(grid.clientWidth/240));
+      const isM=window.innerWidth<640, R=isM?92:110;
+      balls.forEach((b,i)=>{
+        const x=(i%cols)*240+20, y=Math.floor(i/cols)*240+20;
+        b.el.style.transform='translate3d('+x+'px,'+y+'px,0)';
+        if(b.portal) b.portal.style.transform='translate3d('+(x+R)+'px,'+(y+R)+'px,0)';
+      });
+      return;
+    }
+    const W=()=>grid.clientWidth, H=()=>grid.clientHeight;
+    requestAnimationFrame(()=>{
+      balls.forEach(b=>{
+        const rect=b.el.getBoundingClientRect();
+        b.r=Math.max(rect.width,rect.height)/2;
+        b.x=b.r+Math.random()*Math.max(1,(W()-2*b.r));
+        b.y=b.r+Math.random()*Math.max(1,(H()-2*b.r));
+        const sp=0.45+Math.random()*0.55, ang=Math.random()*Math.PI*2;
+        b.vx=Math.cos(ang)*sp; b.vy=Math.sin(ang)*sp;
+      });
+      for(let iter=0;iter<80;iter++){
+        let moved=false;
+        for(let i=0;i<balls.length;i++){
+          for(let j=i+1;j<balls.length;j++){
+            const a=balls[i],b=balls[j];
+            const dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)||0.0001,mn=a.r+b.r+2;
+            if(d<mn){const ov=(mn-d)/2,nx=dx/d,ny=dy/d;a.x-=nx*ov;a.y-=ny*ov;b.x+=nx*ov;b.y+=ny*ov;moved=true;}
+          }
+        }
+        if(!moved) break;
+      }
+      function tick(){
+        const w=W(),h=H();
+        for(const b of balls){
+          b.x+=b.vx; b.y+=b.vy;
+          if(b.x<b.r){b.x=b.r;b.vx=Math.abs(b.vx);} else if(b.x>w-b.r){b.x=w-b.r;b.vx=-Math.abs(b.vx);}
+          if(b.y<b.r){b.y=b.r;b.vy=Math.abs(b.vy);} else if(b.y>h-b.r){b.y=h-b.r;b.vy=-Math.abs(b.vy);}
+        }
+        for(let i=0;i<balls.length;i++){
+          for(let j=i+1;j<balls.length;j++){
+            const a=balls[i],b=balls[j];
+            const dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)||0.0001,mn=a.r+b.r;
+            if(d<mn){
+              const nx=dx/d,ny=dy/d,ov=(mn-d)/2;
+              a.x-=nx*ov;a.y-=ny*ov;b.x+=nx*ov;b.y+=ny*ov;
+              const va=a.vx*nx+a.vy*ny, vb=b.vx*nx+b.vy*ny;
+              if(va-vb>0){const df=vb-va; a.vx+=df*nx;a.vy+=df*ny;b.vx-=df*nx;b.vy-=df*ny;}
+            }
+          }
+        }
+        for(const b of balls){
+          b.el.style.transform='translate3d('+(b.x-b.r).toFixed(1)+'px,'+(b.y-b.r).toFixed(1)+'px,0)';
+          if(b.portal) b.portal.style.transform='translate3d('+b.x.toFixed(1)+'px,'+b.y.toFixed(1)+'px,0)';
+        }
+        requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+    window.addEventListener('resize',()=>{
+      const w=grid.clientWidth,h=grid.clientHeight;
+      for(const b of balls){
+        if(b.r){
+          b.x=Math.min(Math.max(b.r,b.x),Math.max(b.r,w-b.r));
+          b.y=Math.min(Math.max(b.r,b.y),Math.max(b.r,h-b.r));
+        }
+      }
+    });
+  })();
+
+  // Background music (Web Audio API · retro K-pop disco-pop · always on)
+  (function initMusic(){
+    let actx=null,beat=0,timerId=null,nextTime=0,started=false;
+    const BPM=124, blen=60/BPM/4; // 16th-note step
+    // F major palette (Hz)
+    const F2=87.31,G2=98,A2=110,Bb2=116.54,C3=130.81,D3=146.83,E3=164.81,
+          F3=174.61,G3=196,A3=220,Bb3=233.08,C4=261.63,D4=293.66,E4=329.63,
+          F4=349.23,G4=392,A4=440,Bb4=466.16,C5=523.25,D5=587.33,E5=659.26,F5=698.46,D2=73.42;
+    // 16-step bar · chords F | Dm | Bb | C
+    // 32-step CHORUS loop · 2 bars · F → Dm → Bb → C (8 steps per chord)
+    const bassP =[
+      F2,0,F2,F3, A2,0,F2,A2,
+      D2,0,A2,D3, F3,0,D3,A2,
+      Bb2,0,F3,Bb2, D3,0,Bb2,F2,
+      C3,0,G2,C3, E3,0,C3,G2
+    ];
+    const chordP=[
+      0,0,[F4,A4,C5],0, 0,0,[F4,A4,C5],0,
+      0,0,[D4,F4,A4],0, 0,0,[D4,F4,A4],0,
+      0,0,[Bb3,D4,F4],0, 0,0,[Bb3,D4,F4],0,
+      0,0,[C4,E4,G4],0, 0,0,[C4,E4,G4],0
+    ];
+    const leadP =[
+      C5,0,A4,0, D5,0,A4,0,
+      F5,0,D5,0, A4,0,F4,0,
+      Bb4,0,D5,0, F5,0,Bb4,0,
+      C5,0,E5,0, G4,A4,G4,F4
+    ];
+    // 4-on-the-floor kick + double-kick at bar-2 fill (step 31)
+    const kickP =[1,0,0,0, 1,0,0,0, 1,0,0,0, 1,0,0,0,
+                  1,0,0,0, 1,0,0,0, 1,0,0,0, 1,0,0,1];
+    // Snare on 2 & 4 + ghost notes + bar-2 ending fill
+    const snareP=[0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,1,
+                  0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,1,0];
+    // K-pop hand-clap layer doubling 2 & 4
+    const clapP =[0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,0,
+                  0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,0];
+    // 16th-note hat with offbeat accent + busier on bar 2
+    const hatP  =[.16,.10,.28,.10, .16,.10,.28,.10, .16,.10,.28,.10, .16,.12,.28,.18,
+                  .16,.10,.28,.10, .16,.10,.28,.10, .16,.10,.28,.10, .16,.18,.30,.22];
+    // Open hi-hat sizzle on the "and" of beat 2 (gives drive & air)
+    const ohatP =[0,0,0,0, 0,0,1,0, 0,0,0,0, 0,0,1,0,
+                  0,0,0,0, 0,0,1,0, 0,0,0,0, 0,0,0,0];
+    // Tom fill leading into the next loop (high → mid)
+    const tomP  =[0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0,
+                  0,0,0,0, 0,0,0,0, 0,0,0,0, 0,A3,F3,0];
+    const out=()=>actx.destination;
+    function kick(t){
+      const o=actx.createOscillator(),g=actx.createGain();
+      o.frequency.setValueAtTime(150,t);o.frequency.exponentialRampToValueAtTime(40,t+0.18);
+      g.gain.setValueAtTime(0.85,t);g.gain.exponentialRampToValueAtTime(0.001,t+0.22);
+      o.connect(g);g.connect(out());o.start(t);o.stop(t+0.25);
+      const oc=actx.createOscillator(),gc=actx.createGain();
+      oc.frequency.value=1100;gc.gain.setValueAtTime(0.18,t);gc.gain.exponentialRampToValueAtTime(0.001,t+0.01);
+      oc.connect(gc);gc.connect(out());oc.start(t);oc.stop(t+0.012);
+    }
+    function snare(t){
+      const sz=Math.ceil(actx.sampleRate*0.13),buf=actx.createBuffer(1,sz,actx.sampleRate);
+      const d=buf.getChannelData(0);for(let i=0;i<sz;i++)d[i]=Math.random()*2-1;
+      const src=actx.createBufferSource();src.buffer=buf;
+      const bp=actx.createBiquadFilter();bp.type='bandpass';bp.frequency.value=2200;bp.Q.value=0.7;
+      const ng=actx.createGain();ng.gain.setValueAtTime(0.5,t);ng.gain.exponentialRampToValueAtTime(0.001,t+0.13);
+      src.connect(bp);bp.connect(ng);ng.connect(out());src.start(t);src.stop(t+0.14);
+      const o=actx.createOscillator(),g=actx.createGain();
+      o.frequency.value=200;g.gain.setValueAtTime(0.25,t);g.gain.exponentialRampToValueAtTime(0.001,t+0.08);
+      o.connect(g);g.connect(out());o.start(t);o.stop(t+0.1);
+    }
+    function hat(t,vol){
+      const sz=Math.ceil(actx.sampleRate*0.04),buf=actx.createBuffer(1,sz,actx.sampleRate);
+      const d=buf.getChannelData(0);for(let i=0;i<sz;i++)d[i]=Math.random()*2-1;
+      const src=actx.createBufferSource();src.buffer=buf;
+      const hp=actx.createBiquadFilter();hp.type='highpass';hp.frequency.value=8500;
+      const g=actx.createGain();g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(0.001,t+0.03);
+      src.connect(hp);hp.connect(g);g.connect(out());src.start(t);src.stop(t+0.04);
+    }
+    function bass(t,freq){
+      const o=actx.createOscillator(),g=actx.createGain();
+      const flt=actx.createBiquadFilter();flt.type='lowpass';
+      flt.frequency.setValueAtTime(900,t);flt.frequency.exponentialRampToValueAtTime(450,t+blen*1.5);
+      flt.Q.value=4.5;
+      o.type='sawtooth';o.frequency.value=freq;
+      g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(0.3,t+0.005);
+      g.gain.exponentialRampToValueAtTime(0.001,t+blen*1.6);
+      o.connect(flt);flt.connect(g);g.connect(out());o.start(t);o.stop(t+blen*1.7);
+    }
+    function pluck(t,freq){
+      const o=actx.createOscillator(),g=actx.createGain();
+      const flt=actx.createBiquadFilter();flt.type='lowpass';flt.frequency.value=4200;flt.Q.value=2;
+      o.type='square';o.frequency.value=freq;
+      const dur=blen*1.9;
+      g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(0.07,t+0.005);
+      g.gain.exponentialRampToValueAtTime(0.001,t+dur);
+      o.connect(flt);flt.connect(g);g.connect(out());o.start(t);o.stop(t+dur+0.02);
+    }
+    function chord(t,freqs){freqs.forEach(f=>pluck(t,f));}
+    // K-pop hand-clap: 3 short noise bursts stacked with tiny offsets
+    function clap(t){
+      for(let k=0;k<3;k++){
+        const sz=Math.ceil(actx.sampleRate*0.04),buf=actx.createBuffer(1,sz,actx.sampleRate);
+        const d=buf.getChannelData(0);for(let i=0;i<sz;i++)d[i]=Math.random()*2-1;
+        const src=actx.createBufferSource();src.buffer=buf;
+        const bp=actx.createBiquadFilter();bp.type='bandpass';bp.frequency.value=1500;bp.Q.value=1.2;
+        const g=actx.createGain();
+        const tk=t+k*0.012;
+        g.gain.setValueAtTime(0.32,tk);g.gain.exponentialRampToValueAtTime(0.001,tk+0.06);
+        src.connect(bp);bp.connect(g);g.connect(out());src.start(tk);src.stop(tk+0.07);
+      }
+    }
+    // Open hi-hat: longer high-passed noise burst
+    function ohat(t,vol){
+      const sz=Math.ceil(actx.sampleRate*0.18),buf=actx.createBuffer(1,sz,actx.sampleRate);
+      const d=buf.getChannelData(0);for(let i=0;i<sz;i++)d[i]=Math.random()*2-1;
+      const src=actx.createBufferSource();src.buffer=buf;
+      const hp=actx.createBiquadFilter();hp.type='highpass';hp.frequency.value=8000;
+      const g=actx.createGain();g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(0.001,t+0.16);
+      src.connect(hp);hp.connect(g);g.connect(out());src.start(t);src.stop(t+0.18);
+    }
+    // Tom drum: pitched sine sweep + click attack
+    function tom(t,freq){
+      const o=actx.createOscillator(),g=actx.createGain();
+      o.type='sine';
+      o.frequency.setValueAtTime(freq,t);o.frequency.exponentialRampToValueAtTime(freq*0.5,t+0.18);
+      g.gain.setValueAtTime(0.5,t);g.gain.exponentialRampToValueAtTime(0.001,t+0.22);
+      o.connect(g);g.connect(out());o.start(t);o.stop(t+0.25);
+      const oc=actx.createOscillator(),gc=actx.createGain();
+      oc.frequency.value=freq*4;gc.gain.setValueAtTime(0.18,t);gc.gain.exponentialRampToValueAtTime(0.001,t+0.01);
+      oc.connect(gc);gc.connect(out());oc.start(t);oc.stop(t+0.012);
+    }
+    function lead(t,freq){
+      const o=actx.createOscillator(),o2=actx.createOscillator(),g=actx.createGain();
+      o.type='triangle';o.frequency.value=freq;
+      o2.type='square';o2.frequency.value=freq*1.005;
+      const dur=blen*1.6;
+      g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(0.06,t+0.012);
+      g.gain.setValueAtTime(0.05,t+dur*0.5);g.gain.exponentialRampToValueAtTime(0.001,t+dur);
+      o.connect(g);o2.connect(g);g.connect(out());
+      o.start(t);o.stop(t+dur+0.01);o2.start(t);o2.stop(t+dur+0.01);
+    }
+    function schedule(){
+      if(!actx) return;
+      const i=beat%32;
+      if(kickP[i])  kick(nextTime);
+      if(snareP[i]) snare(nextTime);
+      if(clapP[i])  clap(nextTime);
+      if(hatP[i])   hat(nextTime,hatP[i]);
+      if(ohatP[i])  ohat(nextTime,0.18);
+      if(tomP[i])   tom(nextTime,tomP[i]);
+      if(bassP[i])  bass(nextTime,bassP[i]);
+      if(chordP[i]) chord(nextTime,chordP[i]);
+      if(leadP[i])  lead(nextTime,leadP[i]);
+      nextTime+=blen;beat++;
+    }
+    function startLoop(){
+      nextTime=actx.currentTime+0.06;beat=0;
+      timerId=setInterval(()=>{while(nextTime<actx.currentTime+0.18)schedule();},25);
+    }
+    async function ensureStart(){
+      if(started) return;
+      try{
+        if(!actx) actx=new(window.AudioContext||window.webkitAudioContext)();
+        if(actx.state==='suspended') await actx.resume();
+        if(actx.state==='running'){started=true;startLoop();}
+      }catch(e){}
+    }
+    // Try autoplay; browsers that block until interaction will start on first gesture.
+    ensureStart();
+    ['click','touchstart','keydown','pointerdown','scroll'].forEach(ev=>{
+      window.addEventListener(ev,()=>ensureStart(),{once:false,passive:true});
+    });
+  })();
+})();`;
+  }
+
+  function flashMessage(text){
+    const flash = document.createElement('div');
+    flash.textContent = text;
+    flash.style.cssText = `
+      position:fixed;top:30px;left:50%;transform:translateX(-50%);
+      background:linear-gradient(90deg,#00f0ff,#a64bff);color:#fff;
+      padding:14px 28px;border-radius:14px;font-family:'Audiowide',sans-serif;
+      letter-spacing:.2em;z-index:100;box-shadow:0 0 30px rgba(0,240,255,.6);
+      animation:flashIn .4s ease,flashOut .4s ease 1.4s forwards;
+    `;
+    document.body.appendChild(flash);
+    setTimeout(()=>flash.remove(), 1900);
+  }
+
+  function flashSave(){
+    const flash = document.createElement('div');
+    flash.textContent = '✅ SAVED';
+    flash.style.cssText = `
+      position:fixed;top:30px;left:50%;transform:translateX(-50%);
+      background:linear-gradient(90deg,#00f0ff,#a64bff);color:#fff;
+      padding:14px 28px;border-radius:14px;font-family:'Audiowide',sans-serif;
+      letter-spacing:.2em;z-index:100;box-shadow:0 0 30px rgba(0,240,255,.6);
+      animation:flashIn .4s ease,flashOut .4s ease 1.4s forwards;
+    `;
+    document.body.appendChild(flash);
+    setTimeout(()=>flash.remove(), 1900);
+  }
+  const styleEl = document.createElement('style');
+  styleEl.textContent = `@keyframes flashIn{from{opacity:0;transform:translate(-50%,-20px)}to{opacity:1;transform:translate(-50%,0)}}@keyframes flashOut{to{opacity:0;transform:translate(-50%,-20px)}}`;
+  document.head.appendChild(styleEl);
+
+  // --- Music (admin preview · retro K-pop disco-pop · always on) ---
+  (function initMusic(){
+    let actx=null,beat=0,timerId=null,nextTime=0,started=false;
+    const BPM=124, blen=60/BPM/4; // 16th-note step
+    const F2=87.31,G2=98,A2=110,Bb2=116.54,C3=130.81,D3=146.83,E3=164.81,
+          F3=174.61,G3=196,A3=220,Bb3=233.08,C4=261.63,D4=293.66,E4=329.63,
+          F4=349.23,G4=392,A4=440,Bb4=466.16,C5=523.25,D5=587.33,E5=659.26,F5=698.46,D2=73.42;
+    // 32-step CHORUS loop · 2 bars · F → Dm → Bb → C (8 steps per chord)
+    const bassP =[
+      F2,0,F2,F3, A2,0,F2,A2,
+      D2,0,A2,D3, F3,0,D3,A2,
+      Bb2,0,F3,Bb2, D3,0,Bb2,F2,
+      C3,0,G2,C3, E3,0,C3,G2
+    ];
+    const chordP=[
+      0,0,[F4,A4,C5],0, 0,0,[F4,A4,C5],0,
+      0,0,[D4,F4,A4],0, 0,0,[D4,F4,A4],0,
+      0,0,[Bb3,D4,F4],0, 0,0,[Bb3,D4,F4],0,
+      0,0,[C4,E4,G4],0, 0,0,[C4,E4,G4],0
+    ];
+    const leadP =[
+      C5,0,A4,0, D5,0,A4,0,
+      F5,0,D5,0, A4,0,F4,0,
+      Bb4,0,D5,0, F5,0,Bb4,0,
+      C5,0,E5,0, G4,A4,G4,F4
+    ];
+    // 4-on-the-floor kick + double-kick at bar-2 fill (step 31)
+    const kickP =[1,0,0,0, 1,0,0,0, 1,0,0,0, 1,0,0,0,
+                  1,0,0,0, 1,0,0,0, 1,0,0,0, 1,0,0,1];
+    // Snare on 2 & 4 + ghost notes + bar-2 ending fill
+    const snareP=[0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,1,
+                  0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,1,0];
+    // K-pop hand-clap layer doubling 2 & 4
+    const clapP =[0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,0,
+                  0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,0];
+    // 16th-note hat with offbeat accent + busier on bar 2
+    const hatP  =[.16,.10,.28,.10, .16,.10,.28,.10, .16,.10,.28,.10, .16,.12,.28,.18,
+                  .16,.10,.28,.10, .16,.10,.28,.10, .16,.10,.28,.10, .16,.18,.30,.22];
+    // Open hi-hat sizzle on the "and" of beat 2 (gives drive & air)
+    const ohatP =[0,0,0,0, 0,0,1,0, 0,0,0,0, 0,0,1,0,
+                  0,0,0,0, 0,0,1,0, 0,0,0,0, 0,0,0,0];
+    // Tom fill leading into the next loop (high → mid)
+    const tomP  =[0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0,
+                  0,0,0,0, 0,0,0,0, 0,0,0,0, 0,A3,F3,0];
+    const out=()=>actx.destination;
+    function kick(t){
+      const o=actx.createOscillator(),g=actx.createGain();
+      o.frequency.setValueAtTime(150,t);o.frequency.exponentialRampToValueAtTime(40,t+0.18);
+      g.gain.setValueAtTime(0.85,t);g.gain.exponentialRampToValueAtTime(0.001,t+0.22);
+      o.connect(g);g.connect(out());o.start(t);o.stop(t+0.25);
+      const oc=actx.createOscillator(),gc=actx.createGain();
+      oc.frequency.value=1100;gc.gain.setValueAtTime(0.18,t);gc.gain.exponentialRampToValueAtTime(0.001,t+0.01);
+      oc.connect(gc);gc.connect(out());oc.start(t);oc.stop(t+0.012);
+    }
+    function snare(t){
+      const sz=Math.ceil(actx.sampleRate*0.13),buf=actx.createBuffer(1,sz,actx.sampleRate);
+      const d=buf.getChannelData(0);for(let i=0;i<sz;i++)d[i]=Math.random()*2-1;
+      const src=actx.createBufferSource();src.buffer=buf;
+      const bp=actx.createBiquadFilter();bp.type='bandpass';bp.frequency.value=2200;bp.Q.value=0.7;
+      const ng=actx.createGain();ng.gain.setValueAtTime(0.5,t);ng.gain.exponentialRampToValueAtTime(0.001,t+0.13);
+      src.connect(bp);bp.connect(ng);ng.connect(out());src.start(t);src.stop(t+0.14);
+      const o=actx.createOscillator(),g=actx.createGain();
+      o.frequency.value=200;g.gain.setValueAtTime(0.25,t);g.gain.exponentialRampToValueAtTime(0.001,t+0.08);
+      o.connect(g);g.connect(out());o.start(t);o.stop(t+0.1);
+    }
+    function hat(t,vol){
+      const sz=Math.ceil(actx.sampleRate*0.04),buf=actx.createBuffer(1,sz,actx.sampleRate);
+      const d=buf.getChannelData(0);for(let i=0;i<sz;i++)d[i]=Math.random()*2-1;
+      const src=actx.createBufferSource();src.buffer=buf;
+      const hp=actx.createBiquadFilter();hp.type='highpass';hp.frequency.value=8500;
+      const g=actx.createGain();g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(0.001,t+0.03);
+      src.connect(hp);hp.connect(g);g.connect(out());src.start(t);src.stop(t+0.04);
+    }
+    function bass(t,freq){
+      const o=actx.createOscillator(),g=actx.createGain();
+      const flt=actx.createBiquadFilter();flt.type='lowpass';
+      flt.frequency.setValueAtTime(900,t);flt.frequency.exponentialRampToValueAtTime(450,t+blen*1.5);
+      flt.Q.value=4.5;
+      o.type='sawtooth';o.frequency.value=freq;
+      g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(0.3,t+0.005);
+      g.gain.exponentialRampToValueAtTime(0.001,t+blen*1.6);
+      o.connect(flt);flt.connect(g);g.connect(out());o.start(t);o.stop(t+blen*1.7);
+    }
+    function pluck(t,freq){
+      const o=actx.createOscillator(),g=actx.createGain();
+      const flt=actx.createBiquadFilter();flt.type='lowpass';flt.frequency.value=4200;flt.Q.value=2;
+      o.type='square';o.frequency.value=freq;
+      const dur=blen*1.9;
+      g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(0.07,t+0.005);
+      g.gain.exponentialRampToValueAtTime(0.001,t+dur);
+      o.connect(flt);flt.connect(g);g.connect(out());o.start(t);o.stop(t+dur+0.02);
+    }
+    function chord(t,freqs){freqs.forEach(f=>pluck(t,f));}
+    // K-pop hand-clap: 3 short noise bursts stacked with tiny offsets
+    function clap(t){
+      for(let k=0;k<3;k++){
+        const sz=Math.ceil(actx.sampleRate*0.04),buf=actx.createBuffer(1,sz,actx.sampleRate);
+        const d=buf.getChannelData(0);for(let i=0;i<sz;i++)d[i]=Math.random()*2-1;
+        const src=actx.createBufferSource();src.buffer=buf;
+        const bp=actx.createBiquadFilter();bp.type='bandpass';bp.frequency.value=1500;bp.Q.value=1.2;
+        const g=actx.createGain();
+        const tk=t+k*0.012;
+        g.gain.setValueAtTime(0.32,tk);g.gain.exponentialRampToValueAtTime(0.001,tk+0.06);
+        src.connect(bp);bp.connect(g);g.connect(out());src.start(tk);src.stop(tk+0.07);
+      }
+    }
+    // Open hi-hat: longer high-passed noise burst
+    function ohat(t,vol){
+      const sz=Math.ceil(actx.sampleRate*0.18),buf=actx.createBuffer(1,sz,actx.sampleRate);
+      const d=buf.getChannelData(0);for(let i=0;i<sz;i++)d[i]=Math.random()*2-1;
+      const src=actx.createBufferSource();src.buffer=buf;
+      const hp=actx.createBiquadFilter();hp.type='highpass';hp.frequency.value=8000;
+      const g=actx.createGain();g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(0.001,t+0.16);
+      src.connect(hp);hp.connect(g);g.connect(out());src.start(t);src.stop(t+0.18);
+    }
+    // Tom drum: pitched sine sweep + click attack
+    function tom(t,freq){
+      const o=actx.createOscillator(),g=actx.createGain();
+      o.type='sine';
+      o.frequency.setValueAtTime(freq,t);o.frequency.exponentialRampToValueAtTime(freq*0.5,t+0.18);
+      g.gain.setValueAtTime(0.5,t);g.gain.exponentialRampToValueAtTime(0.001,t+0.22);
+      o.connect(g);g.connect(out());o.start(t);o.stop(t+0.25);
+      const oc=actx.createOscillator(),gc=actx.createGain();
+      oc.frequency.value=freq*4;gc.gain.setValueAtTime(0.18,t);gc.gain.exponentialRampToValueAtTime(0.001,t+0.01);
+      oc.connect(gc);gc.connect(out());oc.start(t);oc.stop(t+0.012);
+    }
+    function lead(t,freq){
+      const o=actx.createOscillator(),o2=actx.createOscillator(),g=actx.createGain();
+      o.type='triangle';o.frequency.value=freq;
+      o2.type='square';o2.frequency.value=freq*1.005;
+      const dur=blen*1.6;
+      g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(0.06,t+0.012);
+      g.gain.setValueAtTime(0.05,t+dur*0.5);g.gain.exponentialRampToValueAtTime(0.001,t+dur);
+      o.connect(g);o2.connect(g);g.connect(out());
+      o.start(t);o.stop(t+dur+0.01);o2.start(t);o2.stop(t+dur+0.01);
+    }
+    function schedule(){
+      if(!actx) return;
+      const i=beat%32;
+      if(kickP[i])  kick(nextTime);
+      if(snareP[i]) snare(nextTime);
+      if(clapP[i])  clap(nextTime);
+      if(hatP[i])   hat(nextTime,hatP[i]);
+      if(ohatP[i])  ohat(nextTime,0.18);
+      if(tomP[i])   tom(nextTime,tomP[i]);
+      if(bassP[i])  bass(nextTime,bassP[i]);
+      if(chordP[i]) chord(nextTime,chordP[i]);
+      if(leadP[i])  lead(nextTime,leadP[i]);
+      nextTime+=blen;beat++;
+    }
+    function startLoop(){
+      nextTime=actx.currentTime+0.06;beat=0;
+      timerId=setInterval(()=>{while(nextTime<actx.currentTime+0.18)schedule();},25);
+    }
+    async function ensureStart(){
+      if(started) return;
+      try{
+        if(!actx) actx=new(window.AudioContext||window.webkitAudioContext)();
+        if(actx.state==='suspended') await actx.resume();
+        if(actx.state==='running'){started=true;startLoop();}
+      }catch(e){}
+    }
+    ensureStart();
+    ['click','touchstart','keydown','pointerdown','scroll'].forEach(ev=>{
+      window.addEventListener(ev,()=>ensureStart(),{once:false,passive:true});
+    });
+  })();
+
+  // --- Boot ---
+  applyPublishState();
+  renderAll();
+  setInterval(updateFarewellDays, 60000);
+})();
+</script>
+</body>
+</html>
