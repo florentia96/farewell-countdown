@@ -13,7 +13,7 @@ Thumbs.db
 *~
 
 # ── Claude Code ───────────────────────────────────────────
-.claude/worktrees/
+.claude/
 
 # ── Env / Secrets ─────────────────────────────────────────
 .env
